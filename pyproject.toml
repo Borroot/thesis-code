@@ -15,7 +15,9 @@ dependencies = [
     "ray[data,default,rllib,train,tune] (>=2.43.0,<3.0.0)",
     "jsonpickle (>=4.0.2,<5.0.0)",
     "torch (>=2.6.0,<3.0.0)",
-    "numpy (<2.00)"
+    "numpy (<2.00)",
+    "imageio (>=2.37.0,<3.0.0)",
+    "matplotlib (>=3.10.1,<4.0.0)"
 ]
 
 [tool.poetry]
