@@ -4,7 +4,6 @@ import grid2op
 import gymnasium as gym
 from grid2op.gym_compat import BoxGymObsSpace, DiscreteActSpaceGymnasium, GymEnv
 from grid2op.gym_compat.box_gym_obsspace import ALL_ATTR_OBS
-from gymnasium.spaces import Box
 from lightsim2grid import LightSimBackend
 
 from utils import remove_invalid_actions
