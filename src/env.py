@@ -2,13 +2,7 @@ import copy
 
 import grid2op
 import gymnasium as gym
-import numpy as np
-from grid2op.gym_compat import (
-    BoxGymObsSpace,
-    DiscreteActSpaceGymnasium,
-    GymEnv,
-    GymnasiumActionSpace,
-)
+from grid2op.gym_compat import BoxGymObsSpace, DiscreteActSpaceGymnasium, GymEnv
 from grid2op.gym_compat.box_gym_obsspace import ALL_ATTR_OBS
 from gymnasium.spaces import Box
 from lightsim2grid import LightSimBackend
@@ -43,29 +37,20 @@ class Env(gym.Env):
         self.gym_env = GymEnv(self.g2p_env)
 
         # 3. customize action space and observation space
+        # action space
+        self.gym_env.action_space.close()
+        self.gym_env.action_space = DiscreteActSpaceGymnasium(
+            self.g2p_env.action_space, attr_to_keep=act_tokeep
+        )
         # observation space
         self.gym_env.observation_space.close()
         self.gym_env.observation_space = BoxGymObsSpace(
             self.g2p_env.observation_space, attr_to_keep=obs_tokeep
         )
-        # action space
-        self.gym_env.action_space.close()
-        # self.gym_env.action_space = DiscreteActSpaceGymnasium(
-        self.gym_env.action_space = GymnasiumActionSpace(
-            self.g2p_env.action_space, attr_to_keep=act_tokeep
-        )
 
-        # 4. specific to rllib
-        self.observation_space = Box(
-            low=self.gym_env.observation_space.low,
-            high=self.gym_env.observation_space.high,
-            shape=self.gym_env.observation_space.shape,
-        )
-        self.action_space = Box(
-            low=self.gym_env.action_space.low,
-            high=self.gym_env.action_space.high,
-            shape=self.gym_env.action_space.shape,
-        )
+        # 4. set the observation space and action space
+        self.action_space = self.gym_env.action_space
+        self.observation_space = self.gym_env.observation_space
 
     def reset(self, *, seed=None, options=None):
         return self.gym_env.reset(seed=seed, options=options)
