@@ -18,8 +18,7 @@ dependencies = [
     "numpy (<2.00)",
     "imageio (>=2.37.0,<3.0.0)",
     "matplotlib (>=3.10.1,<4.0.0)",
-    "gputil (>=1.4.0,<2.0.0)",
-    "isort (>=3.9.0)"
+    "gputil (>=1.4.0,<2.0.0)"
 ]
 
 [tool.poetry]
