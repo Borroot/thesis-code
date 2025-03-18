@@ -2,6 +2,7 @@ import os
 from pprint import pprint
 
 import grid2op
+import numpy as np
 from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
 from ray.rllib.algorithms.algorithm import Algorithm
@@ -25,6 +26,22 @@ os.makedirs(env_path, exist_ok=True)
 # TODO download the env once in $HOME and move it to the cluster nodes
 grid2op.change_local_dir(env_path)  # change where to store the environment
 
+# Train a mask model
+
+env_config = {
+    "env_name": "l2rpn_case14_sandbox",
+    "reward_class": LinesCapacityReward,
+    "chronics_class": MultifolderWithCache,
+    "mask_model": None,
+}
+env = Env(config=env_config)
+action_space_size = env.action_space.n
+env_config["mask_model"] = lambda _obs: np.random.choice(
+    [0.0, 1.0], size=action_space_size
+).astype(
+    np.float32
+)  # TODO implement a real mask model
+
 # Train and evaluate the agent
 
 config = (
@@ -32,11 +49,7 @@ config = (
     .env_runners(num_env_runners=8)
     .environment(
         env=Env,
-        env_config={
-            "env_name": "l2rpn_case14_sandbox",
-            "reward_class": LinesCapacityReward,
-            "chronics_class": MultifolderWithCache,
-        },
+        env_config=env_config,
         action_mask_key=None,
     )
     .rl_module(
