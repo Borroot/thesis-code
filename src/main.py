@@ -6,6 +6,10 @@ from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
 from ray.rllib.algorithms.algorithm import Algorithm
 from ray.rllib.algorithms.ppo import PPOConfig
+from ray.rllib.core.rl_module.rl_module import RLModuleSpec
+from ray.rllib.examples.rl_modules.classes.action_masking_rlm import (
+    ActionMaskingTorchRLModule,
+)
 
 from env import Env
 
@@ -34,6 +38,15 @@ config = (
             "chronics_class": MultifolderWithCache,
         },
         action_mask_key=None,
+    )
+    .rl_module(
+        rl_module_spec=RLModuleSpec(
+            module_class=ActionMaskingTorchRLModule,
+            model_config={
+                "head_fcnet_hiddens": [100, 100],
+                "head_fcnet_activation": "relu",
+            },
+        )
     )
     .training(lr=0.9999, num_epochs=1, minibatch_size=32)
     .evaluation(

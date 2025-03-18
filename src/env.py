@@ -2,8 +2,10 @@ import copy
 
 import grid2op
 import gymnasium as gym
+import numpy as np
 from grid2op.gym_compat import BoxGymObsSpace, DiscreteActSpaceGymnasium, GymEnv
 from grid2op.gym_compat.box_gym_obsspace import ALL_ATTR_OBS
+from gymnasium.spaces import Box, Dict
 from lightsim2grid import LightSimBackend
 
 from utils import remove_invalid_actions
@@ -49,10 +51,38 @@ class Env(gym.Env):
 
         # 4. set the observation space and action space
         self.action_space = self.gym_env.action_space
-        self.observation_space = self.gym_env.observation_space
+        self.observation_space = Dict(
+            {
+                "action_mask": Box(0.0, 1.0, shape=(self.action_space.n,)),
+                "observations": self.gym_env.observation_space,
+            }
+        )
+
+        # TODO add action space masking
+        # https://github.com/ray-project/ray/blob/master/rllib/examples/envs/classes/action_mask_env.py
+        # https://github.com/ray-project/ray/blob/84d17cad835665631c2f68f6fb332e2973028fab/rllib/examples/action_masking.py
 
     def reset(self, *, seed=None, options=None):
-        return self.gym_env.reset(seed=seed, options=options)
+        obs, info = self.gym_env.reset(seed=seed, options=options)
 
-    def step(self, act):
-        return self.gym_env.step(act)
+        action_mask = np.ones(self.action_space.n)
+        action_mask[::2] = 0.0
+
+        # Create a dictionary with the observation and action mask
+        obs = {"observations": obs, "action_mask": action_mask}
+        return obs, info
+
+    def step(self, action):
+        if action % 2 == 0:
+            print("invalid", action)
+            raise ValueError("Invalid action")
+
+        print("valid", action)
+        obs, reward, terminated, truncated, info = self.gym_env.step(action)
+
+        action_mask = np.ones(self.action_space.n)
+        action_mask[::2] = 0.0
+
+        # Create a dictionary with the observation and action mask
+        obs = {"observations": obs, "action_mask": action_mask}
+        return obs, reward, terminated, truncated, info
