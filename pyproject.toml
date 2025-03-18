@@ -23,6 +23,7 @@ dependencies = [
 
 [tool.poetry]
 packages = [{include = "code", from = "src"}]
+package-mode = false
 
 
 [tool.poetry.group.dev.dependencies]
