@@ -3,6 +3,7 @@ from pprint import pprint
 
 import grid2op
 import numpy as np
+import ray
 from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
 from ray.rllib.algorithms.algorithm import Algorithm
@@ -44,9 +45,21 @@ env_config["mask_model"] = lambda _obs: np.random.choice(
 
 # Train and evaluate the agent
 
-config = (
+ray.init(include_dashboard=False)
+
+algo = (
     PPOConfig()
-    .env_runners(num_env_runners=8)
+    .env_runners(
+        num_env_runners=16,  # number of CPUs, NOT number of threads
+        num_envs_per_env_runner=1,
+        num_cpus_per_env_runner=1,
+        num_gpus_per_env_runner=0,
+    )
+    .learners(
+        num_learners=0,  # 0 means training takes place on a local learner on main process CPUs or 1 GPU determined by num_gpus_per_learner
+        num_cpus_per_learner=0,
+        num_gpus_per_learner=1,  # can be fractional
+    )
     .environment(
         env=Env,
         env_config=env_config,
@@ -56,21 +69,20 @@ config = (
         rl_module_spec=RLModuleSpec(
             module_class=ActionMaskingTorchRLModule,
             model_config={
-                "head_fcnet_hiddens": [100, 100],
+                "head_fcnet_hiddens": [300, 300, 300],
                 "head_fcnet_activation": "relu",
             },
         )
     )
-    .training(lr=0.9999, num_epochs=1, minibatch_size=32)
+    .training(lr=3e-6, gamma=0.999, clip_param=0.2, num_epochs=10, minibatch_size=16)
     .evaluation(
         evaluation_interval=1,
         evaluation_duration=10,
         evaluation_parallel_to_training=False,
     )
-)
-algo = config.build_algo()
+).build_algo()
 
-max_iter = 2
+max_iter = 3
 for i in range(max_iter):
     pprint(algo.train())
     algo.save_to_path(path=os.path.join(model_path, f"{i:03d}"))
