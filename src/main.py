@@ -1,10 +1,10 @@
-import argparse
 import os
 from pprint import pprint
 
 import grid2op
 import numpy as np
 import ray
+from args import commandline_arguments
 from env import Env
 from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
@@ -14,57 +14,6 @@ from ray.rllib.core.rl_module.rl_module import RLModuleSpec
 from ray.rllib.examples.rl_modules.classes.action_masking_rlm import (
     ActionMaskingTorchRLModule,
 )
-
-
-def commandline_arguments():
-    parser = argparse.ArgumentParser(description="ArgumentParser Examples")
-
-    parser.add_argument(
-        "--path-model-save", type=str, help="Path to save the model checkpoints to"
-    )
-    parser.add_argument(
-        "--path-model-load",
-        type=str,
-        help="Path to load a specific model checkpoint from",
-    )
-    parser.add_argument(
-        "--path-env", type=str, help="Path to save and load the environment"
-    )
-    parser.add_argument(
-        "env-name",
-        type=str,
-        choices=[
-            "l2rpn_case14_sandbox",
-            "l2rpn_icaps_2021_small",
-            "l2rpn_icaps_2021_large",
-            "l2rpn_wcci_2020",
-            "l2rpn_wcci_2022",
-            "l2rpn_idf_2023",
-        ],
-        default="l2rpn_case14_sandbox",
-        help="Name of the environment",
-    )
-
-    # # 1. Positional argument
-    # parser.add_argument('name', type=str, help='Your name')
-
-    # # 2. Optional argument with default value
-    # parser.add_argument('--age', type=int, default=25, help='Your age (default: 25)')
-
-    # # 3. Flag argument (store_true or store_false)
-    # parser.add_argument('--verbose', action='store_true', help='Increase output verbosity')
-
-    # # 4. List of values (nargs='*' allows 0 or more values)
-    # parser.add_argument('--colors', nargs='*', help='List of favorite colors')
-
-    # # 6. Multiple values for a single argument (nargs='+')
-    # parser.add_argument('--numbers', nargs='+', type=int, help='List of numbers')
-
-    # # 8. Argument that stores a constant value (store_const)
-    # parser.add_argument('--debug', dest='debug', action='store_const', const=True, help='Enable debugging')
-
-    return parser.parse_args()
-
 
 if __name__ == "__main__":
     args = commandline_arguments()
@@ -105,17 +54,17 @@ if __name__ == "__main__":
     algo = (
         PPOConfig()
         .env_runners(
-            num_env_runners=16,  # number of CPUs, NOT number of threads
-            num_envs_per_env_runner=1,
-            num_cpus_per_env_runner=1,
+            num_env_runners=args.num_env_runners,
+            num_envs_per_env_runner=args.num_envs_per_env_runner,
+            num_cpus_per_env_runner=args.num_cpus_per_env_runner,
             num_gpus_per_env_runner=0,
         )
         .learners(
             # 0 means training takes place on a local learner on main process
             # CPUs or 1 GPU determined by num_gpus_per_learner
-            num_learners=0,
+            num_learners=args.num_learners,
             num_cpus_per_learner=0,
-            num_gpus_per_learner=1,  # can be fractional
+            num_gpus_per_learner=args.num_gpus_per_learner,
         )
         .environment(
             env=Env,
@@ -132,12 +81,16 @@ if __name__ == "__main__":
             )
         )
         .training(
-            lr=3e-6, gamma=0.999, clip_param=0.2, num_epochs=10, minibatch_size=16
+            lr=args.learning_rate,
+            gamma=args.gamma,
+            clip_param=args.epsilon,
+            num_epochs=args.num_epochs,
+            minibatch_size=args.minibatch_size,
         )
         .evaluation(
-            evaluation_interval=1,
-            evaluation_duration=10,
-            evaluation_parallel_to_training=False,
+            evaluation_interval=args.evaluation_interval,
+            evaluation_duration=args.evaluation_duration,
+            evaluation_parallel_to_training=args.evaluation_parallel_to_training,
         )
     ).build_algo()
 

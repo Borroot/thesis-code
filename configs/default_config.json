@@ -1,0 +1,19 @@
+{
+    "path-model-save": "path/to/save",
+    "path-model-load": "path/to/load",
+    "path-env": "path/to/env",
+    "env-name": "l2rpn_case14_sandbox",
+    "num-env-runners": 16,
+    "num-envs-per-env-runner": 1,
+    "num-cpus-per-env-runner": 1,
+    "num-learners": 0,
+    "num-gpus-per-learner": 1,
+    "epsilon": 0.2,
+    "learning-rate": 3e-6,
+    "gamma": 0.999,
+    "num-epochs": 10,
+    "minibatch-size": 16,
+    "evaluation-interval": 1,
+    "evaluation-duration": 10,
+    "evaluation-parallel-to-training": false
+}
