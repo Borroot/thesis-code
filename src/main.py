@@ -4,8 +4,6 @@ from pprint import pprint
 import grid2op
 import numpy as np
 import ray
-from args import commandline_arguments
-from env import Env
 from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
 from ray.rllib.algorithms.algorithm import Algorithm
@@ -15,20 +13,22 @@ from ray.rllib.examples.rl_modules.classes.action_masking_rlm import (
     ActionMaskingTorchRLModule,
 )
 
+from args import commandline_arguments
+from env import Env
+
 if __name__ == "__main__":
     args = commandline_arguments()
 
     # Setup storage directories
 
     base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    model_path = os.path.join(base_path, "models")
-    env_path = os.path.join(base_path, "envs")
+    model_path = os.path.join(base_path, args.path_model_save)
+    env_path = os.path.join(base_path, args.path_env)
 
     os.makedirs(model_path, exist_ok=True)
     os.makedirs(env_path, exist_ok=True)
 
-    # TODO download the env once in $HOME and move it to the cluster nodes
-    grid2op.change_local_dir(env_path)  # change where to store the environment
+    grid2op.change_local_dir(env_path)
 
     # Train a mask model
 

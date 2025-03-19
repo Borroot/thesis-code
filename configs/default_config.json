@@ -1,7 +1,6 @@
 {
-    "path-model-save": "path/to/save",
-    "path-model-load": "path/to/load",
-    "path-env": "path/to/env",
+    "path-model-save": "models",
+    "path-env": "envs",
     "env-name": "l2rpn_case14_sandbox",
     "num-env-runners": 16,
     "num-envs-per-env-runner": 1,
