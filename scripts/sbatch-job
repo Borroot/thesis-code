@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
-#SBATCH --job-name="PPO_on_grid"
-#SBATCH --time=1:00  # HH:MM:SS
-#SBATCH --partition=gpu_a100
-#SBATCH --cpus-per-task=18
-#SBATCH --gpus-per-node=1
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-
+#
 # +----------+------+-----------+----------------------------+-------------+------------+
 # | GPU      | GPUs | CPU cores | Node Breakdown             | SBUs/h full | SBUs/h min |
 # +----------+------+-----------+----------------------------+-------------+------------+
@@ -14,6 +7,14 @@
 # | gpu_h100 | 4    | 64        | 1/4 node: 16 cores + 1 GPU | 768 SBUs    | 192 SBUs   |
 # | gpu_mig  | 8    | 72        | 1/8 node: 9 cores  + 1 GPU | 512 SBUs    | 64  SBUs   |
 # +----------+------+-----------+----------------------------+-------------+------------+
+#
+#SBATCH --job-name="PPO_on_grid"
+#SBATCH --time=1:00  # HH:MM:SS
+#SBATCH --partition=gpu_a100
+#SBATCH --cpus-per-task=18
+#SBATCH --gpus-per-node=1
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
 
 # Load the required modules
 module load 2024

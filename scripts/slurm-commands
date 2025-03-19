@@ -1,0 +1,20 @@
+# show account info
+accinfo
+# show budget info
+budget-overview
+
+# show available partitions
+sinfo -s
+
+# submit a job
+sbatch job.sh
+
+# current jobs in the queue
+squeue -u bpulles
+# delete job from queue
+scancel "[jobid]"
+
+# show job history
+sacct
+# job information
+scontrol show job "<jobid>"
