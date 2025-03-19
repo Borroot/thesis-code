@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+#SBATCH --job-name="PPO_on_grid"
+#SBATCH --time=1:00  # HH:MM:SS
+#SBATCH --partition=gpu_a100
+#SBATCH --cpus-per-task=18
+#SBATCH --gpus-per-node=1
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+
+# +----------+------+-----------+----------------------------+-------------+------------+
+# | GPU      | GPUs | CPU cores | Node Breakdown             | SBUs/h full | SBUs/h min |
+# +----------+------+-----------+----------------------------+-------------+------------+
+# | gpu_a100 | 4    | 72        | 1/4 node: 18 cores + 1 GPU | 512 SBUs    | 128 SBUs   |
+# | gpu_h100 | 4    | 64        | 1/4 node: 16 cores + 1 GPU | 768 SBUs    | 192 SBUs   |
+# | gpu_mig  | 8    | 72        | 1/8 node: 9 cores  + 1 GPU | 512 SBUs    | 64  SBUs   |
+# +----------+------+-----------+----------------------------+-------------+------------+
+
+# Load the required modules
+module load 2024
+module load Python/3.12.3-GCCcore-13.3.0
+
+# Copy the environment to local scratch storage
+# declare -r ENV_NAME="l2rpn_case14_sandbox"
+# cp -r "$HOME/code/envs/$ENV_NAME" "$TMPDIR/envs/$ENV_NAME"
+echo "Job id: $SLURM_JOB_ID"
+echo "$SLURM_JOB_ID" > "$HOME/code/test-input.txt"
+cp -v "$HOME/code/test-input.txt" "$TMPDIR/test-input.txt"
+
+# Execute the python program
+poetry run python "$HOME/code/scripts/test-io.py" "$TMPDIR/test-input.txt" "$TMPDIR/test-output.txt"
+
+# Copy the saved models to home
+# declare -r OUTPUT_DIR="timestamp$SLURM_JOB_START_TIME-jobid$SLURM_JOB_ID"
+# cp -r "$TMPDIR/models" "$HOME/code/models/$OUTPUT_DIR"
+cp -v "$TMPDIR/test-output.txt" "$HOME/code/test-output.txt"
+
+echo "Job $SLURM_JOB_ID finished"
+
+echo 'cat "$HOME/code/test-input.txt"'
+cat "$HOME/code/test-input.txt"
+
+echo 'cat "$HOME/code/test-output.txt"'
+cat "$HOME/code/test-output.txt"
+
+diff -s "$HOME/code/test-input.txt" "$HOME/code/test-output.txt"

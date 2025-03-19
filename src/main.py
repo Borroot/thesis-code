@@ -87,7 +87,9 @@ if __name__ == "__main__":
             num_gpus_per_env_runner=0,
         )
         .learners(
-            num_learners=0,  # 0 means training takes place on a local learner on main process CPUs or 1 GPU determined by num_gpus_per_learner
+            # 0 means training takes place on a local learner on main process
+            # CPUs or 1 GPU determined by num_gpus_per_learner
+            num_learners=0,
             num_cpus_per_learner=0,
             num_gpus_per_learner=1,  # can be fractional
         )

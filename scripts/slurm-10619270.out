@@ -1,0 +1,24 @@
+Job id: 10619270
+'/home/bpulles/code/test-input.txt' -> '/scratch-local/bpulles.10619270/test-input.txt'
+'/scratch-local/bpulles.10619270/test-output.txt' -> '/home/bpulles/code/test-output.txt'
+Job 10619270 finished
+cat "$HOME/code/test-input.txt"
+10619270
+cat "$HOME/code/test-output.txt"
+10619270
+Files /home/bpulles/code/test-input.txt and /home/bpulles/code/test-output.txt are identical
+
+JOB STATISTICS
+==============
+Job ID: 10619270
+Cluster: snellius
+User/Group: bpulles/bpulles
+State: RUNNING
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 00:04:48 core-walltime
+Job Wall-clock time: 00:00:16
+Memory Utilized: 0.00 MB (estimated maximum)
+Memory Efficiency: 0.00% of 120.00 GB (120.00 GB/node)
+WARNING: Efficiency statistics may be misleading for RUNNING jobs.
