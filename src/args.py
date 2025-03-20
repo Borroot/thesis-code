@@ -9,7 +9,7 @@ def process_paths(args):
     relative to the project root.
     """
     base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    for key in ["path_model_save", "path_model_load", "path_env"]:
+    for key in ["path_checkpoint_save", "path_checkpoint_load", "path_env"]:
         if getattr(args, key) is not None and not os.path.isabs(getattr(args, key)):
             setattr(args, key, os.path.join(base_path, getattr(args, key)))
     return args
@@ -28,7 +28,7 @@ def commandline_arguments():
     parser.add_argument(
         "--config",
         type=str,
-        default="configs/default_config.json",
+        default="configs/default.json",
         help="Path to the default configuration JSON file",
     )
 
@@ -50,14 +50,21 @@ def commandline_arguments():
         "--path-env", type=str, help="Path to save and load the environment"
     )
 
-    # Model parameters
+    # Checkpoint parameters
     parser.add_argument(
-        "--path-model-save", type=str, help="Path to save the model checkpoints to"
+        "--path-checkpoint-save",
+        type=str,
+        help="Path to save the checkpoint checkpoints to",
     )
     parser.add_argument(
-        "--path-model-load",
+        "--path-checkpoint-load",
         type=str,
-        help="Path to load a specific model checkpoint from",
+        help="Path to load a specific checkpoint checkpoint from",
+    )
+    parser.add_argument(
+        "--checkpoint-interval",
+        type=int,
+        help="Interval in iterations to save the model",
     )
 
     # Environment runner parameters
@@ -93,6 +100,7 @@ def commandline_arguments():
     parser.add_argument("--gamma", type=float, help="Discount factor")
     parser.add_argument("--num-epochs", type=int, help="Number of epochs")
     parser.add_argument("--minibatch-size", type=int, help="Minibatch size")
+    parser.add_argument("--num-iterations", type=int, help="Number of iterations")
 
     # Evaluation parameters
     parser.add_argument(

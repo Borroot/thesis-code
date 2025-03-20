@@ -1,7 +1,8 @@
 {
-    "path-model-save": "models",
-    "path-env": "envs",
     "env-name": "l2rpn_case14_sandbox",
+    "path-env": "envs",
+    "path-checkpoint-save": "checkpoints",
+    "checkpoint-interval": 1,
     "num-env-runners": 16,
     "num-envs-per-env-runner": 1,
     "num-cpus-per-env-runner": 1,
@@ -12,6 +13,7 @@
     "gamma": 0.999,
     "num-epochs": 10,
     "minibatch-size": 16,
+    "num-iterations": 3,
     "evaluation-interval": 1,
     "evaluation-duration": 10,
     "evaluation-parallel-to-training": false

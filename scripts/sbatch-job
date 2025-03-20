@@ -30,9 +30,9 @@ cp -v "$HOME/code/test-input.txt" "$TMPDIR/test-input.txt"
 # Execute the python program
 poetry run python "$HOME/code/scripts/test-io.py" "$TMPDIR/test-input.txt" "$TMPDIR/test-output.txt"
 
-# Copy the saved models to home
+# Copy the saved checkpoints to home
 # declare -r OUTPUT_DIR="timestamp$SLURM_JOB_START_TIME-jobid$SLURM_JOB_ID"
-# cp -r "$TMPDIR/models" "$HOME/code/models/$OUTPUT_DIR"
+# cp -r "$TMPDIR/checkpoints" "$HOME/code/checkpoints/$OUTPUT_DIR"
 cp -v "$TMPDIR/test-output.txt" "$HOME/code/test-output.txt"
 
 echo "Job $SLURM_JOB_ID finished"

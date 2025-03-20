@@ -29,7 +29,7 @@ class Env(gym.Env):
         env_name = config.pop("env_name")
         obs_tokeep = config.pop("obs_tokeep", copy.deepcopy(ALL_ATTR_OBS))
         act_tokeep = config.pop("act_tokeep", copy.deepcopy(ALL_ATTR_ACT_DISCRETE))
-        self.mask_model = config.pop("mask_model", None)
+        self.mask_checkpoint = config.pop("mask_model", None)
 
         # 1. create the grid2op environment
         self.g2p_env = grid2op.make(env_name, backend=backend, **config)
@@ -60,15 +60,15 @@ class Env(gym.Env):
             }
         )
 
-        # 5. initialize a mask model always returning 1.0 if none provided
-        if self.mask_model is None:
-            self.mask_model = lambda _obs: np.ones(
+        # 5. initialize a mask checkpoint always returning 1.0 if none provided
+        if self.mask_checkpoint is None:
+            self.mask_checkpoint = lambda _obs: np.ones(
                 self.action_space.n, dtype=np.float32
             )
 
     def reset(self, *, seed=None, options=None):
         obs, info = self.gym_env.reset(seed=seed, options=options)
-        self.action_mask = self.mask_model(obs)
+        self.action_mask = self.mask_checkpoint(obs)
         obs = {"observations": obs, "action_mask": self.action_mask}
         return obs, info
 
@@ -77,6 +77,6 @@ class Env(gym.Env):
             raise ValueError("Invalid action (masked)")
 
         obs, reward, terminated, truncated, info = self.gym_env.step(action)
-        self.action_mask = self.mask_model(obs)
+        self.action_mask = self.mask_checkpoint(obs)
         obs = {"observations": obs, "action_mask": self.action_mask}
         return obs, reward, terminated, truncated, info

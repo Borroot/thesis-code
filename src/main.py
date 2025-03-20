@@ -1,3 +1,4 @@
+import json
 import os
 from pprint import pprint
 
@@ -16,35 +17,24 @@ from ray.rllib.examples.rl_modules.classes.action_masking_rlm import (
 from args import commandline_arguments
 from env import Env
 
-if __name__ == "__main__":
-    args = commandline_arguments()
 
-    # Setup directories
-
-    os.makedirs(args.path_model_save, exist_ok=True)
-    os.makedirs(args.path_env, exist_ok=True)
-    grid2op.change_local_dir(args.path_env)
-
-    # Train a mask model
+def create_algo(args):
+    """Create a new algorithm given the commandline arguments."""
 
     env_config = {
-        # "env_name": "l2rpn_icaps_2021_small",  # causes RAM shortage
-        "env_name": "l2rpn_case14_sandbox",
+        "env_name": args.env_name,
         "reward_class": LinesCapacityReward,
         "chronics_class": MultifolderWithCache,
         "mask_model": None,
     }
+
+    # TODO Implement a real mask model
+    # Create a dummy mask model
     env = Env(config=env_config)
     action_space_size = env.action_space.n
     env_config["mask_model"] = lambda _obs: np.random.choice(
         [0.0, 1.0], size=action_space_size
-    ).astype(
-        np.float32
-    )  # TODO implement a real mask model
-
-    # Train and evaluate the agent
-
-    ray.init(include_dashboard=False)
+    ).astype(np.float32)
 
     algo = (
         PPOConfig()
@@ -89,10 +79,47 @@ if __name__ == "__main__":
         )
     ).build_algo()
 
-    max_iter = 3
-    for i in range(max_iter):
-        pprint(algo.train())
-        algo.save_to_path(path=os.path.join(args.path_model_save, f"{i:03d}"))
+    # save the settings to a JSON file
+    with open(os.path.join(args.path_checkpoint_save, "config.json"), "w") as f:
+        json.dump(vars(args), f, indent=4)
 
-    # algo = Algorithm.from_checkpoint(path=os.path.join(args.path_model_save, f"{1 - 1:03d}"))
-    # pprint(algo.train())
+    return algo
+
+
+def load_algo(args):
+    """Load an algorithm from a checkpoint."""
+    algo = Algorithm.from_checkpoint(path=args.path_checkpoint_load)
+    return algo
+
+
+def create_checkpoint(algo, args):
+    """Save the current state of the algorithm to a checkpoint."""
+    algo.save_to_path(
+        path=os.path.join(args.path_checkpoint_save, f"{algo.iteration - 1:03d}")
+    )
+
+
+if __name__ == "__main__":
+    args = commandline_arguments()
+
+    # Setup directories
+    os.makedirs(args.path_checkpoint_save, exist_ok=True)
+    os.makedirs(args.path_env, exist_ok=True)
+    grid2op.change_local_dir(args.path_env)
+
+    # Create or load an algorithm
+    ray.init(include_dashboard=False)
+    if args.path_checkpoint_load is None:
+        algo = create_algo(args)
+    else:
+        algo = load_algo(args)
+
+    # Train the RL agent
+    while algo.iteration < args.num_iterations:
+        results = algo.train()
+        pprint(results)
+
+        if algo.iteration % args.checkpoint_interval == 0:
+            create_checkpoint(algo, args)
+
+    create_checkpoint(algo, args)
