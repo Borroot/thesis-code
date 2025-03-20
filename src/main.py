@@ -6,6 +6,8 @@ import grid2op
 import jsonpickle
 import numpy as np
 import ray
+from args import commandline_arguments
+from env import Env
 from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
 from ray.rllib.algorithms.algorithm import Algorithm
@@ -14,9 +16,6 @@ from ray.rllib.core.rl_module.rl_module import RLModuleSpec
 from ray.rllib.examples.rl_modules.classes.action_masking_rlm import (
     ActionMaskingTorchRLModule,
 )
-
-from args import commandline_arguments
-from env import Env
 
 
 def create_algo(args):
@@ -44,6 +43,7 @@ def create_algo(args):
             num_envs_per_env_runner=args.num_envs_per_env_runner,
             num_cpus_per_env_runner=args.num_cpus_per_env_runner,
             num_gpus_per_env_runner=0,
+            sample_timeout_s=None,  # TODO set a sensible value
         )
         .learners(
             # 0 means training takes place on a local learner on main process

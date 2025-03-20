@@ -11,6 +11,8 @@ sbatch job.sh
 
 # current jobs in the queue
 squeue -u bpulles
+# watch the queue live
+watch -n1 squeue -u bpulles
 # delete job from queue
 scancel "[jobid]"
 

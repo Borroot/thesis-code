@@ -1,0 +1,43 @@
+2025-03-20 13:38:20,474	WARNING deprecation.py:50 -- DeprecationWarning: `ray.rllib.algorithms.ppo.torch.ppo_torch_rl_module.PPOTorchRLModule` has been deprecated. Use `ray.rllib.algorithms.ppo.torch.default_ppo_torch_rl_module.DefaultPPOTorchRLModule` instead. This will raise an error in the future!
+2025-03-20 13:38:22,653	INFO worker.py:1841 -- Started a local Ray instance.
+2025-03-20 13:38:40,514	WARNING algorithm_config.py:4703 -- You are running PPO on the new API stack! This is the new default behavior for this algorithm. If you don't want to use the new API stack, set `config.api_stack(enable_rl_module_and_learner=False,enable_env_runner_and_connector_v2=False)`. For a detailed migration guide, see here: https://docs.ray.io/en/master/rllib/new-api-stack-migration-guide.html
+/home/bpulles/.cache/pypoetry/virtualenvs/code-nlzvBX7P-py3.12/lib/python3.12/site-packages/ray/rllib/algorithms/algorithm.py:512: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+`UnifiedLogger` will be removed in Ray 2.7.
+  return UnifiedLogger(config, logdir, loggers=None)
+/home/bpulles/.cache/pypoetry/virtualenvs/code-nlzvBX7P-py3.12/lib/python3.12/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+The `JsonLogger interface is deprecated in favor of the `ray.tune.json.JsonLoggerCallback` interface and will be removed in Ray 2.7.
+  self._loggers.append(cls(self.config, self.logdir, self.trial))
+/home/bpulles/.cache/pypoetry/virtualenvs/code-nlzvBX7P-py3.12/lib/python3.12/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+The `CSVLogger interface is deprecated in favor of the `ray.tune.csv.CSVLoggerCallback` interface and will be removed in Ray 2.7.
+  self._loggers.append(cls(self.config, self.logdir, self.trial))
+/home/bpulles/.cache/pypoetry/virtualenvs/code-nlzvBX7P-py3.12/lib/python3.12/site-packages/ray/tune/logger/unified.py:53: RayDeprecationWarning: This API is deprecated and may be removed in future Ray releases. You could suppress this warning by setting env variable PYTHONWARNINGS="ignore::DeprecationWarning"
+The `TBXLogger interface is deprecated in favor of the `ray.tune.tensorboardx.TBXLoggerCallback` interface and will be removed in Ray 2.7.
+  self._loggers.append(cls(self.config, self.logdir, self.trial))
+[36m(SingleAgentEnvRunner pid=2175600)[0m 2025-03-20 13:38:47,589	WARNING deprecation.py:50 -- DeprecationWarning: `ray.rllib.algorithms.ppo.torch.ppo_torch_rl_module.PPOTorchRLModule` has been deprecated. Use `ray.rllib.algorithms.ppo.torch.default_ppo_torch_rl_module.DefaultPPOTorchRLModule` instead. This will raise an error in the future!
+[36m(SingleAgentEnvRunner pid=2175604)[0m /home/bpulles/.cache/pypoetry/virtualenvs/code-nlzvBX7P-py3.12/lib/python3.12/site-packages/gymnasium/utils/passive_env_checker.py:35: UserWarning: [33mWARN: A Box observation space maximum and minimum values are equal.[0m
+[36m(SingleAgentEnvRunner pid=2175604)[0m   logger.warn("A Box observation space maximum and minimum values are equal.")
+[36m(SingleAgentEnvRunner pid=2175608)[0m 2025-03-20 13:38:47,607	WARNING deprecation.py:50 -- DeprecationWarning: `ray.rllib.algorithms.ppo.torch.ppo_torch_rl_module.PPOTorchRLModule` has been deprecated. Use `ray.rllib.algorithms.ppo.torch.default_ppo_torch_rl_module.DefaultPPOTorchRLModule` instead. This will raise an error in the future![32m [repeated 15x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)[0m
+[36m(SingleAgentEnvRunner pid=2175602)[0m 2025-03-20 13:39:01,547	WARNING deprecation.py:50 -- DeprecationWarning: `RLModule(config=[RLModuleConfig object])` has been deprecated. Use `RLModule(observation_space=.., action_space=.., inference_only=.., model_config=.., catalog_class=..)` instead. This will raise an error in the future!
+/home/bpulles/.cache/pypoetry/virtualenvs/code-nlzvBX7P-py3.12/lib/python3.12/site-packages/gymnasium/utils/passive_env_checker.py:35: UserWarning: [33mWARN: A Box observation space maximum and minimum values are equal.[0m
+  logger.warn("A Box observation space maximum and minimum values are equal.")
+2025-03-20 13:39:14,971	WARNING deprecation.py:50 -- DeprecationWarning: `RLModule(config=[RLModuleConfig object])` has been deprecated. Use `RLModule(observation_space=.., action_space=.., inference_only=.., model_config=.., catalog_class=..)` instead. This will raise an error in the future!
+/home/bpulles/.cache/pypoetry/virtualenvs/code-nlzvBX7P-py3.12/lib/python3.12/site-packages/gymnasium/envs/registration.py:642: UserWarning: [33mWARN: Overriding environment rllib-single-agent-env-v0 already in registry.[0m
+  logger.warn(f"Overriding environment {new_spec.id} already in registry.")
+/home/bpulles/.cache/pypoetry/virtualenvs/code-nlzvBX7P-py3.12/lib/python3.12/site-packages/gymnasium/utils/passive_env_checker.py:35: UserWarning: [33mWARN: A Box observation space maximum and minimum values are equal.[0m
+  logger.warn("A Box observation space maximum and minimum values are equal.")
+2025-03-20 13:45:36,379	INFO trainable.py:160 -- Trainable.setup took 415.754 seconds. If your trainable is slow to initialize, consider setting reuse_actors=True to reduce actor creation overheads.
+slurmstepd: error: *** JOB 10656031 ON gcn32 CANCELLED AT 2025-03-20T13:47:50 DUE TO TIME LIMIT ***
+
+JOB STATISTICS
+==============
+Job ID: 10656031
+Cluster: snellius
+User/Group: bpulles/bpulles
+State: TIMEOUT (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 04:36:54 core-walltime
+Job Wall-clock time: 00:15:23
+Memory Utilized: 0.00 MB (estimated maximum)
+Memory Efficiency: 0.00% of 120.00 GB (120.00 GB/node)
