@@ -19,16 +19,11 @@ from env import Env
 if __name__ == "__main__":
     args = commandline_arguments()
 
-    # Setup storage directories
+    # Setup directories
 
-    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    model_path = os.path.join(base_path, args.path_model_save)
-    env_path = os.path.join(base_path, args.path_env)
-
-    os.makedirs(model_path, exist_ok=True)
-    os.makedirs(env_path, exist_ok=True)
-
-    grid2op.change_local_dir(env_path)
+    os.makedirs(args.path_model_save, exist_ok=True)
+    os.makedirs(args.path_env, exist_ok=True)
+    grid2op.change_local_dir(args.path_env)
 
     # Train a mask model
 
@@ -97,7 +92,7 @@ if __name__ == "__main__":
     max_iter = 3
     for i in range(max_iter):
         pprint(algo.train())
-        algo.save_to_path(path=os.path.join(model_path, f"{i:03d}"))
+        algo.save_to_path(path=os.path.join(args.path_model_save, f"{i:03d}"))
 
-    # algo = Algorithm.from_checkpoint(path=os.path.join(model_path, f"{1 - 1:03d}"))
+    # algo = Algorithm.from_checkpoint(path=os.path.join(args.path_model_save, f"{1 - 1:03d}"))
     # pprint(algo.train())

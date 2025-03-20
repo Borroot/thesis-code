@@ -1,5 +1,18 @@
 import argparse
 import json
+import os
+
+
+def process_paths(args):
+    """
+    Process the paths into absolute paths. Any relative path is assumed to be
+    relative to the project root.
+    """
+    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for key in ["path_model_save", "path_model_load", "path_env"]:
+        if getattr(args, key) is not None and not os.path.isabs(getattr(args, key)):
+            setattr(args, key, os.path.join(base_path, getattr(args, key)))
+    return args
 
 
 def load_json_defaults(defaults_path):
@@ -101,4 +114,6 @@ def commandline_arguments():
     # Load and set the defaults from the config file
     defaults = load_json_defaults(parser.get_default("config"))
     parser.set_defaults(**defaults)
-    return parser.parse_args()
+    args = parser.parse_args()
+    args = process_paths(args)
+    return args
