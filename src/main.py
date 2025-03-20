@@ -3,6 +3,7 @@ import os
 from pprint import pprint
 
 import grid2op
+import jsonpickle
 import numpy as np
 import ray
 from grid2op.Chronics import MultifolderWithCache
@@ -92,11 +93,20 @@ def load_algo(args):
     return algo
 
 
-def create_checkpoint(algo, args):
+def save_checkpoint(algo, args):
     """Save the current state of the algorithm to a checkpoint."""
     algo.save_to_path(
-        path=os.path.join(args.path_checkpoint_save, f"{algo.iteration - 1:03d}")
+        path=os.path.join(args.path_checkpoint_save, f"{algo.iteration - 1:06d}")
     )
+
+
+def save_results(results, args):
+    """Save the results of the training iteration to a JSON file."""
+    path_results = os.path.join(
+        args.path_checkpoint_save, f"{results['training_iteration'] - 1:06d}.json"
+    )
+    with open(path_results, "w") as f:
+        f.write(jsonpickle.encode(results, indent=4))
 
 
 if __name__ == "__main__":
@@ -117,9 +127,10 @@ if __name__ == "__main__":
     # Train the RL agent
     while algo.iteration < args.num_iterations:
         results = algo.train()
+        save_results(results, args)
         pprint(results)
 
         if algo.iteration % args.checkpoint_interval == 0:
-            create_checkpoint(algo, args)
+            save_checkpoint(algo, args)
 
-    create_checkpoint(algo, args)
+    save_checkpoint(algo, args)
