@@ -33,7 +33,7 @@ class Env(gym.Env):
 
         # 1. create the grid2op environment
         self.g2p_env = grid2op.make(env_name, backend=backend, **config)
-        self.g2p_env.chronics_handler.real_data.reset()
+        self.g2p_env.chronics_handler.reset()
         act_tokeep = remove_invalid_actions(self.g2p_env, act_tokeep)
 
         # 2. create the gym environment
