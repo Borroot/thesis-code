@@ -20,3 +20,13 @@ scancel "[jobid]"
 sacct
 # job information
 scontrol show job "<jobid>"
+
+# show available modules
+module spider
+# load or unload a module
+module load "<module>"
+module unload "<module>"
+# show the current modules
+module list
+# unload all modules
+module purge
