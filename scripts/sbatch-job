@@ -19,7 +19,7 @@ module load 2024
 module load Python/3.12.3-GCCcore-13.3.0
 
 # Copy the environment to local scratch storage
-declare -r ENV_NAME="l2rpn_icaps_2021_small"
+declare -r ENV_NAME="l2rpn_case14_sandbox"
 mkdir -p "$TMPDIR/envs"
 cp -r "$HOME/code/envs/$ENV_NAME" "$TMPDIR/envs/$ENV_NAME"
 
