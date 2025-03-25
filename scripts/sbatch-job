@@ -39,7 +39,7 @@ py-spy record                                    \
     --rate 1                                     \
     --                                           \
 poetry run                                       \
-python "$HOME/code/src/main.py"                  \
+python "$HOME/code/src/ppo.py"                   \
     --env-name "$ENV_NAME"                       \
     --path-env "$TMPDIR/envs"                    \
     --path-checkpoint-save "$TMPDIR/checkpoints" \
