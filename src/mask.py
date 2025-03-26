@@ -49,9 +49,9 @@ class MaskModel(nn.Module):
 
             # Execute each action in the environment
             for action in range(env.action_space.n):
-                # env_copy = copy.deepcopy(env)
-                # obs, _, _, _, _ = env_copy.step(action)
-                obs_next = obs["observations"].simulate(action)
+                env_copy = copy.deepcopy(env)
+                obs_next, _, _, _, _ = env_copy.step(action)
+                # obs_next = obs["observations"].simulate(action)
                 obs_batch[action] = torch.from_numpy(obs_next["observations"])
 
             print(obs_batch.shape)
@@ -106,14 +106,27 @@ class MaskModel(nn.Module):
 
 
 if __name__ == "__main__":
+    import grid2op
+    from lightsim2grid import LightSimBackend
+
+    # env = grid2op.make(
+    #     "l2rpn_case14_sandbox",
+    #     backend=LightSimBackend(),
+    #     chronics_class=MultifolderWithCache,
+    # )
+    # env.chronics_handler.reset()
+    # copy.deepcopy(env)
+
     env_config = {
         "env_name": "l2rpn_case14_sandbox",
-        "backend_class": PandaPowerBackend,
+        "backend_class": LightSimBackend,
         "reward_class": LinesCapacityReward,
         "chronics_class": MultifolderWithCache,
         # "mask_model": None,
     }
     env = Env(config=env_config)
+
+    copy.deepcopy(env)
 
     mask_model = MaskModel(
         env.observation_space["observations"].shape[0], env.action_space.n

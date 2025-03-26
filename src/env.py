@@ -31,8 +31,8 @@ class Env(gym.Env):
 
         # Configure the environment
         env_name = config.pop("env_name")
-        obs_tokeep = config.pop("obs_tokeep", copy.deepcopy(ALL_ATTR_OBS))
-        act_tokeep = config.pop("act_tokeep", copy.deepcopy(ALL_ATTR_ACT_DISCRETE))
+        self.obs_tokeep = config.pop("obs_tokeep", copy.deepcopy(ALL_ATTR_OBS))
+        self.act_tokeep = config.pop("act_tokeep", copy.deepcopy(ALL_ATTR_ACT_DISCRETE))
 
         # Configure the mask model, the default model masks no actions
         default_mask_model = lambda _obs: np.ones(self.action_space.n, dtype=np.float32)
@@ -41,33 +41,36 @@ class Env(gym.Env):
             default_mask_model if self.mask_model is None else self.mask_model
         )
 
-        # 1. Create the grid2op environment
+        # Create the grid2op environment
         self.g2p_env = grid2op.make(env_name, backend=backend, **config)
         self.g2p_env.chronics_handler.reset()
-        act_tokeep = remove_invalid_actions(self.g2p_env, act_tokeep)
+        self.act_tokeep = remove_invalid_actions(self.g2p_env, self.act_tokeep)
 
-        # 2. Create the gym environment
-        self.gym_env = GymEnv(self.g2p_env)
+        # Create the gym environment
+        self._setup_gym_env()
 
-        # 3. Customize action space and observation space
-        # action space
-        self.gym_env.action_space.close()
-        self.gym_env.action_space = DiscreteActSpaceGymnasium(
-            self.g2p_env.action_space, attr_to_keep=act_tokeep
-        )
-        # observation space
-        self.gym_env.observation_space.close()
-        self.gym_env.observation_space = BoxGymObsSpace(
-            self.g2p_env.observation_space, attr_to_keep=obs_tokeep
-        )
-
-        # 4. Set the observation space and action space
+        # Set the observation space and action space
         self.action_space = self.gym_env.action_space
         self.observation_space = Dict(
             {
                 "action_mask": Box(0.0, 1.0, shape=(self.action_space.n,)),
                 "observations": self.gym_env.observation_space,
             }
+        )
+
+    def _setup_gym_env(self):
+        # Create the gym environment
+        self.gym_env = GymEnv(self.g2p_env)
+
+        # Setup observation space
+        self.gym_env.observation_space.close()
+        self.gym_env.observation_space = BoxGymObsSpace(
+            self.g2p_env.observation_space, attr_to_keep=self.obs_tokeep
+        )
+        # Setup action space
+        self.gym_env.action_space.close()
+        self.gym_env.action_space = DiscreteActSpaceGymnasium(
+            self.g2p_env.action_space, attr_to_keep=self.act_tokeep
         )
 
     def reset(self, *, seed=None, options=None):
@@ -91,22 +94,23 @@ class Env(gym.Env):
         return obs, reward, terminated, truncated, info
 
     def __deepcopy__(self, memo):
-        # Do advanced python things to deepcopy the environment. The difficulty
+        # The regular deepcopy implementation does not work here. The difficulty
         # lies in that the g2p_env cannot be deepcopied, instead we need to use
         # g2p_env.copy() for this attribute.
 
+        # TODO can be removed when the following issues are resolved
+        # https://github.com/Grid2op/lightsim2grid/issues/97
+        # https://github.com/Grid2op/grid2op/issues/672
+
         # Create a class instance without calling __init__()
-        new_env = self.__class__.__new__(self.__class__)
+        env = self.__class__.__new__(self.__class__)
 
         # Add the new instance to the memo dictionary
-        memo[id(self)] = new_env
+        memo[id(self)] = env
 
-        for attr, value in self.__dict__.items():
-            if attr == "g2p_env":
-                # Use the g2p_env.copy() method for copying the grid2op environment
-                setattr(new_env, attr, self.g2p_env.copy())
-            else:
-                # Deep copy other attributes
-                setattr(new_env, attr, copy.deepcopy(value, memo))
+        # Copy all the attributes
+        # TODO continue on this
+        env.g2p_env = self.g2p_env.copy()
+        env.mask_model = copy.deepcopy(self.mask_model)
 
-        return new_env
+        return env
