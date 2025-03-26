@@ -2,6 +2,7 @@ import copy
 
 import torch
 import torch.nn as nn
+from grid2op.Backend.pandaPowerBackend import PandaPowerBackend
 from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
 from sklearn.cluster import DBSCAN
@@ -48,9 +49,10 @@ class MaskModel(nn.Module):
 
             # Execute each action in the environment
             for action in range(env.action_space.n):
-                env_copy = copy.deepcopy(env)
-                obs, _, _, _, _ = env_copy.step(action)
-                obs_batch[action] = obs["observations"]
+                # env_copy = copy.deepcopy(env)
+                # obs, _, _, _, _ = env_copy.step(action)
+                obs_next = obs["observations"].simulate(action)
+                obs_batch[action] = torch.from_numpy(obs_next["observations"])
 
             print(obs_batch.shape)
             print(obs_batch)
@@ -106,6 +108,7 @@ class MaskModel(nn.Module):
 if __name__ == "__main__":
     env_config = {
         "env_name": "l2rpn_case14_sandbox",
+        "backend_class": PandaPowerBackend,
         "reward_class": LinesCapacityReward,
         "chronics_class": MultifolderWithCache,
         # "mask_model": None,
