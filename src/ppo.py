@@ -6,8 +6,6 @@ import grid2op
 import jsonpickle
 import numpy as np
 import ray
-from args import commandline_arguments
-from env import Env
 from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
 from ray.rllib.algorithms.algorithm import Algorithm
@@ -16,6 +14,9 @@ from ray.rllib.core.rl_module.rl_module import RLModuleSpec
 from ray.rllib.examples.rl_modules.classes.action_masking_rlm import (
     ActionMaskingTorchRLModule,
 )
+
+from args import commandline_arguments
+from env import Env
 
 
 def create_algo(args):
