@@ -1350,45 +1350,45 @@ ppo-sb3 = ["stable_baselines3"]
 
 [[package]]
 name = "lightsim2grid"
-version = "0.10.2"
+version = "0.10.3.dev0"
 description = "LightSim2Grid implements a c++ backend targeting the Grid2Op platform."
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "LightSim2Grid-0.10.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:c396c697efc363babf1631cbc45e23ade2ab378ef0eb48fa12d271af7843b9fb"},
-    {file = "LightSim2Grid-0.10.2-cp37-cp37m-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:dab1af08d7c07f5d6c17315c3b745a44966e63d2757befd77da95b0daa15f2d1"},
-    {file = "LightSim2Grid-0.10.2-cp37-cp37m-win_amd64.whl", hash = "sha256:1648b56c6e73936cbdf77ea622789939eb2ff161d3b624d5a78179d3f7dd6736"},
-    {file = "LightSim2Grid-0.10.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:0a291396d53cac97c066387feeae4bcb305a8fefcdb3fcee71cf40bb5627b573"},
-    {file = "LightSim2Grid-0.10.2-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:8e66c463eb30b1e4e396461e6941e12639a0b0f6c01cb8dc01976fc7c0ffa947"},
-    {file = "LightSim2Grid-0.10.2-cp38-cp38-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:a3330b860d547da2bb0c77515be0b3901292f033cd985cc51d3decc9aa6fc3b9"},
-    {file = "LightSim2Grid-0.10.2-cp38-cp38-win_amd64.whl", hash = "sha256:6945ea40e52574523e2fa2a38717012d8218181b38740eca03f0f845ab560c7b"},
-    {file = "lightsim2grid-0.10.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:ee74a84999495d2397aeb6094ab2ef9d9679af5d2acf8fd4a3629ba75426430c"},
-    {file = "lightsim2grid-0.10.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:1dc661f595608424743cf46a36709dbd09a82047bd0ba2a3aad0ed36f1e189ee"},
-    {file = "lightsim2grid-0.10.2-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:f9b5c1660344076213382c3fa8360f121d86c53353440f03344a5b0ae7b233bd"},
-    {file = "lightsim2grid-0.10.2-cp310-cp310-win_amd64.whl", hash = "sha256:dc29ebce2db960b38767e426d8873a5090734ba0abd51d439d215a5559a00d81"},
-    {file = "lightsim2grid-0.10.2-cp310-cp310-win_arm64.whl", hash = "sha256:be3bc107f9791d56b12c081048eeddd71b767e243f8f53bd02be829a1108b95c"},
-    {file = "lightsim2grid-0.10.2-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:c409d6768f6fa363984f52aa9734106d7fc1fad963f6886e41d0602099b8b641"},
-    {file = "lightsim2grid-0.10.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:81647ed93ff7ad3d6d4b38e1168e1895571b063a3c71ff3e993cba6ff58f46ec"},
-    {file = "lightsim2grid-0.10.2-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:36c421070acf789b51d750ff7ba813cb7b21a959264f09de43d0e0175f186159"},
-    {file = "lightsim2grid-0.10.2-cp311-cp311-win_amd64.whl", hash = "sha256:1eef216a1a09bcbecca503f44980c6550b4a9251d7188d866a100d6a49ca03b7"},
-    {file = "lightsim2grid-0.10.2-cp311-cp311-win_arm64.whl", hash = "sha256:fe45fd3542c15960577dfd03f26609cc4db6b3326586484ada1641ef2ea3d9d8"},
-    {file = "lightsim2grid-0.10.2-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:a4721296b03b7988ae28482f78fee475bb6ceef1a455df35300ab82a4d26c71c"},
-    {file = "lightsim2grid-0.10.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:13b1d85263232f32c01434eb3e2c297c62a6fac3e3cdbfe096518a52c3190559"},
-    {file = "lightsim2grid-0.10.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:12dab7bac20703acf7bd65c8688aa4a9b1cc794ce8fd5ecf46bdadb854d97976"},
-    {file = "lightsim2grid-0.10.2-cp312-cp312-win_amd64.whl", hash = "sha256:b4093723b0e4af46e88007c2b520a8eae1f2e93f63e49ecd0ee358456bc21a91"},
-    {file = "lightsim2grid-0.10.2-cp312-cp312-win_arm64.whl", hash = "sha256:11edcacb86c5e3cdfef197c14d768e2867f7dafacde2eb02a59f2a01fb42e580"},
-    {file = "lightsim2grid-0.10.2-cp313-cp313-macosx_10_9_x86_64.whl", hash = "sha256:3b07fcec0d6ecd7db7521e01590ff0ec991d3895386bdd1f775dc056e4de9ed1"},
-    {file = "lightsim2grid-0.10.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:2f59fb2251e525bd90743a2dfa7d0ec7c5d8390c38a968ab13373ba58ff1104e"},
-    {file = "lightsim2grid-0.10.2-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:4c3e3f50f61f6270f6d821370c84c4103a272d355d0cb2973370a8e761641e89"},
-    {file = "lightsim2grid-0.10.2-cp313-cp313-win_amd64.whl", hash = "sha256:fe2d9ea4ade0edf4b9828dd3e71e8e636dbec1df8645364b749867d72e4c7d96"},
-    {file = "lightsim2grid-0.10.2-cp313-cp313-win_arm64.whl", hash = "sha256:48bca66b90725537a9ac3a455af155e992e57faa618479dd9b8337213f544361"},
-    {file = "lightsim2grid-0.10.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:0eae3d519ab6421281dd89f3d64b91a77c7dd788505f5470134a26b326a865b2"},
-    {file = "lightsim2grid-0.10.2-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:311d83f6d33f9eb743de48da6358881043e751ddf6152c12338473cb9f717c6d"},
-    {file = "lightsim2grid-0.10.2-cp39-cp39-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:7fccaa064a0cb5003714d84c31aa051ebd17152a07a68ee6e7acc6f9b5a0224c"},
-    {file = "lightsim2grid-0.10.2-cp39-cp39-win_amd64.whl", hash = "sha256:6e5f736099150e80646c8093ae87275d3c26ba9443d44157d3d3c8db36dd090b"},
-    {file = "lightsim2grid-0.10.2-cp39-cp39-win_arm64.whl", hash = "sha256:66c7d60592f9db5555d4a8481fdbe1f4316ebfbb90e1c5f548e4ea94146c22c2"},
-    {file = "lightsim2grid-0.10.2.tar.gz", hash = "sha256:f8e2fa8119da790d908c81fe1d927b972a3a540d944dd1afd3a75069a58329bc"},
+    {file = "LightSim2Grid-0.10.3.dev0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:5f9dc3fdc76bf9e2f8e4bd3fa71071bc7eebcfb7be9c14f9c90cc049749ebc71"},
+    {file = "LightSim2Grid-0.10.3.dev0-cp37-cp37m-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:10ef78d23f1c658fd8082188f9fa447e1871a70f2277e41db9a4aba67b70eed9"},
+    {file = "LightSim2Grid-0.10.3.dev0-cp37-cp37m-win_amd64.whl", hash = "sha256:d009ad94b3f1e90e96519330c70a8ec014478f9d36235bef9fcb7dca1bde85b4"},
+    {file = "lightsim2grid-0.10.3.dev0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:825ab8a735711f59dafae2323ff01300f5ef06396079b3201a9481dd26ef4034"},
+    {file = "lightsim2grid-0.10.3.dev0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:099b171a176233d9113f98659498f3da52f161a7892c1bae72d620e01f59b40d"},
+    {file = "lightsim2grid-0.10.3.dev0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:24fd952bcd29ccc8391c97bfb746d224bb109900c51cff2bdd777c7b8d499611"},
+    {file = "lightsim2grid-0.10.3.dev0-cp310-cp310-win_amd64.whl", hash = "sha256:dedd9d140824d2c84b1c749808b5696434d439d05ea5f4299cd350c86d50fc1b"},
+    {file = "lightsim2grid-0.10.3.dev0-cp310-cp310-win_arm64.whl", hash = "sha256:b0220cc0d85dbde2bebd489e28514c9c865bf5eaff5ccfd81c263122e31b2a20"},
+    {file = "lightsim2grid-0.10.3.dev0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:55dbcd3353bbc7ab26e8ad45ddb32215027a201a98e7d1d493da3aaf5162e576"},
+    {file = "lightsim2grid-0.10.3.dev0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:2642bd7a59ad5e1dae584e77d7e01a9f3679124e64d078ec97f39795119f41cd"},
+    {file = "lightsim2grid-0.10.3.dev0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:59b3b9b44b0db944848b5a0717ec1eb804fef301049d251113c63d5d6722049a"},
+    {file = "lightsim2grid-0.10.3.dev0-cp311-cp311-win_amd64.whl", hash = "sha256:a71bc5553ecb7124529f900fd90fcc01c2a2491045d1649aa7d7023b8d227129"},
+    {file = "lightsim2grid-0.10.3.dev0-cp311-cp311-win_arm64.whl", hash = "sha256:aa87a2a5769e29466a62fdd855d631bd6b8f2857c05962150d3f88ada1567d54"},
+    {file = "lightsim2grid-0.10.3.dev0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:cdb83a7fe8261cc222b76f432af1890b56ea203b369d62bc3b388474d8bb7493"},
+    {file = "lightsim2grid-0.10.3.dev0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:37dfcf873505dc38bfbf9b88bac8d312c524aae3ea3cc2271bfcf4d0b86bef2c"},
+    {file = "lightsim2grid-0.10.3.dev0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:914919290bae63ea478a5572feed4b6798526b07e23c863a8f46acc11ad8cda4"},
+    {file = "lightsim2grid-0.10.3.dev0-cp312-cp312-win_amd64.whl", hash = "sha256:eebca26b4a91ef91d78d3d9bc317061734e51a09aa605408f669bd109b6c5802"},
+    {file = "lightsim2grid-0.10.3.dev0-cp312-cp312-win_arm64.whl", hash = "sha256:79e7e4de2fd94c8fe69d2807ae81a27c7f3629db6b908f78fe8d16a36f4776de"},
+    {file = "lightsim2grid-0.10.3.dev0-cp313-cp313-macosx_10_9_x86_64.whl", hash = "sha256:e2c4b5fce685a3c8d74fa213110d6e668f04a3ff12fcff6a9cb44f093e9e4a61"},
+    {file = "lightsim2grid-0.10.3.dev0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:e1efb899aeb3103800a734a83e7b76b769bf15d51106f68c808e87320ab314e1"},
+    {file = "lightsim2grid-0.10.3.dev0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:93fd2256119be478315abba764b1aa5f1343cfa0f8a32193e513cea004c7ea9d"},
+    {file = "lightsim2grid-0.10.3.dev0-cp313-cp313-win_amd64.whl", hash = "sha256:2644d67da8fc9e237cf536c6bfab7f49917d573d8850d87c68c94fa033ab3d1d"},
+    {file = "lightsim2grid-0.10.3.dev0-cp313-cp313-win_arm64.whl", hash = "sha256:d66ee2cd4c24d19201c4640742c8570a4ef7d7941f02ddfef95e339ed06811bc"},
+    {file = "lightsim2grid-0.10.3.dev0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:fa1a93a7e0a4d5f15e13689d2fd4898ae28109e417eddb2d7096511780b9e9d7"},
+    {file = "lightsim2grid-0.10.3.dev0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:d55082b9213d5eb15718c1145d0090f3583e2f14bcc9286d34f4fe2e5cd4f66b"},
+    {file = "lightsim2grid-0.10.3.dev0-cp38-cp38-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:ad17bfb19c44614d3949c69106ed6705bde6d0698ef02f80e7b0f2da58d0f100"},
+    {file = "lightsim2grid-0.10.3.dev0-cp38-cp38-win_amd64.whl", hash = "sha256:e7316610a295486cef6c4c216c9abb7322917dd6e008d7ae9aca9e0a621e852e"},
+    {file = "lightsim2grid-0.10.3.dev0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:8506736577253383fff9d1e1670a46a0dac6e352df9aa657aa8cfff90b0ef852"},
+    {file = "lightsim2grid-0.10.3.dev0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:8502ee73f69836bb3469fb1d15ff8c3f0da8f62efe188932a5a9275f5f6cc2d5"},
+    {file = "lightsim2grid-0.10.3.dev0-cp39-cp39-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:1b42ecc91038ce3b4f7fe77a335d52578ab0272b93bf91dfa835f534c4843a4d"},
+    {file = "lightsim2grid-0.10.3.dev0-cp39-cp39-win_amd64.whl", hash = "sha256:35a2ba568aec8db2bc66f4059b7501ecd63103ead461e586b117aa72d5ac5e6e"},
+    {file = "lightsim2grid-0.10.3.dev0-cp39-cp39-win_arm64.whl", hash = "sha256:661d871e55122a05badc34539ed7d8fefbc50a1c9dca4a6f36c8c7089d9a5226"},
+    {file = "lightsim2grid-0.10.3.dev0.tar.gz", hash = "sha256:db0d1e4b96af86fd27e135a5acb2bff50d3cbdd476ea5d3bc945b158f644f7ed"},
 ]
 
 [package.dependencies]
@@ -3930,4 +3930,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "7d834a8c85b256a10f2e247a19422f5eb193a775d42162b6262faadbc0ba6fa9"
+content-hash = "d56b026ac2d49a14b7f14ff220333daf69128301624533632f3e14e370abeb31"

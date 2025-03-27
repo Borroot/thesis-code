@@ -92,25 +92,3 @@ class Env(gym.Env):
         self.action_mask = self.mask_model(obs)
         obs = {"observations": obs, "action_mask": self.action_mask}
         return obs, reward, terminated, truncated, info
-
-    def __deepcopy__(self, memo):
-        # The regular deepcopy implementation does not work here. The difficulty
-        # lies in that the g2p_env cannot be deepcopied, instead we need to use
-        # g2p_env.copy() for this attribute.
-
-        # TODO can be removed when the following issues are resolved
-        # https://github.com/Grid2op/lightsim2grid/issues/97
-        # https://github.com/Grid2op/grid2op/issues/672
-
-        # Create a class instance without calling __init__()
-        env = self.__class__.__new__(self.__class__)
-
-        # Add the new instance to the memo dictionary
-        memo[id(self)] = env
-
-        # Copy all the attributes
-        # TODO continue on this
-        env.g2p_env = self.g2p_env.copy()
-        env.mask_model = copy.deepcopy(self.mask_model)
-
-        return env
