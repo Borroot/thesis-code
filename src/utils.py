@@ -4,11 +4,6 @@ import os
 from grid2op.Episode import EpisodeReplay
 
 
-def remove_invalid_actions(g2p_env, act_tokeep):
-    """Filter out actions which are not usable in the environment."""
-    return [act for act in act_tokeep if g2p_env.action_space.supports_type(act)]
-
-
 def load_used_attributes(path_full, obs_tokeep, act_tokeep):
     """Load the obs_tokeep and act_tokeep dicts from the serialized json files."""
     path_obs = os.path.join(path_full, "obs_tokeep.json")

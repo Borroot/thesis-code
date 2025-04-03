@@ -8,8 +8,6 @@ from grid2op.gym_compat.box_gym_obsspace import ALL_ATTR_OBS
 from gymnasium.spaces import Box, Dict
 from lightsim2grid import LightSimBackend
 
-from utils import remove_invalid_actions
-
 ALL_ATTR_ACT_DISCRETE = (
     "set_line_status",
     "change_line_status",
@@ -20,6 +18,8 @@ ALL_ATTR_ACT_DISCRETE = (
 
 class Env(gym.Env):
     """Environment usable from rllib, mapping a grid2op environment."""
+
+    # TODO create a child class EnvMasked which applies a mask model
 
     def __init__(self, config=None):
         config = copy.deepcopy(config)
@@ -44,7 +44,7 @@ class Env(gym.Env):
         # Create the grid2op environment
         self.g2p_env = grid2op.make(env_name, backend=backend, **config)
         self.g2p_env.chronics_handler.reset()
-        self.act_tokeep = remove_invalid_actions(self.g2p_env, self.act_tokeep)
+        self.act_tokeep = self._remove_invalid_actions(self.g2p_env, self.act_tokeep)
 
         # Create the gym environment
         self._setup_gym_env()
@@ -57,6 +57,10 @@ class Env(gym.Env):
                 "observations": self.gym_env.observation_space,
             }
         )
+
+    def _remove_invalid_actions(self, g2p_env, act_tokeep):
+        """Filter out actions which are not usable in the environment."""
+        return [act for act in act_tokeep if g2p_env.action_space.supports_type(act)]
 
     def _setup_gym_env(self):
         # Create the gym environment

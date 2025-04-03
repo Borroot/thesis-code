@@ -39,6 +39,7 @@ class MaskModel(nn.Module):
         """Execute each action in the current state of the environment."""
         obs_batch = np.zeros((self.act_dim, self.obs_dim), dtype=np.float32)
         for action in range(env.action_space.n):
+            print(f"{action}/{range(env.action_space.n)}")
             env_copy = copy.deepcopy(env)
             obs_next, _, _, _, _ = env_copy.step(action)
             obs_batch[action] = obs_next["observations"]
@@ -92,16 +93,24 @@ class MaskModel(nn.Module):
 
 
 if __name__ == "__main__":
+    # TODO use a BaseMultiProcessEnv to utilize all cpu cores available
+    # TODO write the obs_batches to a file for reuse
+    # TODO decouple generation of data, labels and mask model training
+    # TODO construct an environment which is fast and has a big action space
+    # TODO add commandline argument parsing
+    # TODO write training config and results to a file
+
     env = Env(
         {
             "env_name": "l2rpn_case14_sandbox",
             "backend_class": LightSimBackend,
             "reward_class": LinesCapacityReward,
             "chronics_class": MultifolderWithCache,
+            # "n_busbar": 3,
         }
     )
 
-    mask_model = MaskModel(
-        *env.observation_space["observations"].shape, env.action_space.n
-    )
-    mask_model.train(env, num_episodes=3)
+    # mask_model = MaskModel(
+    #     *env.observation_space["observations"].shape, env.action_space.n
+    # )
+    # mask_model.train(env, num_episodes=1)

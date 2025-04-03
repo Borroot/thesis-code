@@ -31,11 +31,11 @@ def create_algo(args):
 
     # TODO Implement a real mask model
     # Create a dummy mask model
-    env = Env(config=env_config)
-    action_space_size = env.action_space.n
-    env_config["mask_model"] = lambda _obs: np.random.choice(
-        [0.0, 1.0], size=action_space_size
-    ).astype(np.float32)
+    # env = Env(config=env_config)
+    # action_space_size = env.action_space.n
+    # env_config["mask_model"] = lambda _obs: np.random.choice(
+    #     [0.0, 1.0], size=action_space_size
+    # ).astype(np.float32)
 
     algo = (
         PPOConfig()
