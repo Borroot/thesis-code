@@ -20,7 +20,8 @@ dependencies = [
     "matplotlib (>=3.10.1,<4.0.0)",
     "gputil (>=1.4.0,<2.0.0)",
     "scikit-learn (>=1.6.1,<2.0.0)",
-    "lightsim2grid (==0.10.3.dev0)"
+    "lightsim2grid (==0.10.3.dev0)",
+    "pyqt6 (>=6.9.0,<7.0.0)"
 ]
 
 [tool.poetry]

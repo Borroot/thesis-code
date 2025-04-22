@@ -99,6 +99,8 @@ if __name__ == "__main__":
     # TODO construct an environment which is fast and has a big action space
     # TODO add commandline argument parsing
     # TODO write training config and results to a file
+    # TODO currently the environment has 'set' and 'change' actions which do the
+    # same thing, so filter this to only use on of these
 
     env = Env(
         {
@@ -113,4 +115,4 @@ if __name__ == "__main__":
     # mask_model = MaskModel(
     #     *env.observation_space["observations"].shape, env.action_space.n
     # )
-    # mask_model.train(env, num_episodes=1)
+    # mask_model.train(env, num_episodes=2)
