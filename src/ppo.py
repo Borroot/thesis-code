@@ -4,7 +4,6 @@ from pprint import pprint
 
 import grid2op
 import jsonpickle
-import numpy as np
 import ray
 from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
