@@ -43,7 +43,7 @@ def plot_metric(data, key_path):
 
 
 def plot_metrics(data, key_paths):
-    """Plot a specified metric over time."""
+    """Plot the specified metrics over time."""
     plt.figure(figsize=(10, 6))
 
     for key_path in key_paths:
