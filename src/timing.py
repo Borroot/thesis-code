@@ -1,12 +1,14 @@
 import copy
+import os
+import sys
 import time
 
+import grid2op
 import numpy as np
+from env import Env
 from grid2op.Chronics import MultifolderWithCache
 from grid2op.Reward import LinesCapacityReward
 from lightsim2grid import LightSimBackend
-
-from env import Env
 from mask import MaskModel
 
 
@@ -66,6 +68,9 @@ def time_mask_model(env, reps=1):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        grid2op.change_local_dir(sys.argv[1])
+
     env_names = [
         "l2rpn_case14_sandbox",
         "l2rpn_neurips_2020_track1_small",

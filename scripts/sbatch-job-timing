@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#SBATCH --job-name="Gridtime"
+#SBATCH --time=06:00:00  # HH:MM:SS
+#SBATCH --partition=gpu_a100
+#SBATCH --cpus-per-task=18
+#SBATCH --gpus-per-node=1
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --constraint=scratch-node
+
+# Load the required modules
+module load 2024
+module load Python/3.12.3-GCCcore-13.3.0
+
+# Copy the environments to local scratch storage
+mkdir -p "$TMPDIR/envs"
+declare -a ENV_NAMES=("l2rpn_case14_sandbox" "l2rpn_neurips_2020_track1_small" "l2rpn_wcci_2022")
+for ENV_NAME in "${ENV_NAMES[@]}"
+do
+    cp -r "/home/bpulles/code/envs/$ENV_NAME" "$TMPDIR/envs/$ENV_NAME"
+done
+
+# Execute the python program
+poetry run python "/home/bpulles/code/src/timing.py" "$TMPDIR/envs"
