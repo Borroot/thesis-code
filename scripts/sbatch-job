@@ -20,7 +20,7 @@ module load 2024
 module load Python/3.12.3-GCCcore-13.3.0
 
 # Copy the environment to local scratch storage
-declare -r ENV_NAME="l2rpn_neurips_2020_track1_large"
+declare -r ENV_NAME="l2rpn_wcci_2022"
 mkdir -p "$TMPDIR/envs"
 cp -r "$HOME/code/envs/$ENV_NAME" "$TMPDIR/envs/$ENV_NAME"
 
@@ -28,6 +28,8 @@ cp -r "$HOME/code/envs/$ENV_NAME" "$TMPDIR/envs/$ENV_NAME"
 declare -r OUTPUT_STAMP="timestamp$SLURM_JOB_START_TIME-jobid$SLURM_JOB_ID"
 declare -r OUTPUT_DIR="$HOME/code/checkpoints/$OUTPUT_STAMP"
 mkdir -p "$OUTPUT_DIR"
+
+echo "$OUTPUT_DIR"/"$ENV_NAME-1_iter-16_env_runners"
 
 # Execute the python program
 # py-spy record                                    \

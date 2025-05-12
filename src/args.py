@@ -38,6 +38,8 @@ def commandline_arguments():
         type=str,
         choices=[
             "l2rpn_case14_sandbox",
+            "l2rpn_neurips_2020_track1_small",
+            "l2rpn_neurips_2020_track1_large",
             "l2rpn_icaps_2021_small",
             "l2rpn_icaps_2021_large",
             "l2rpn_wcci_2020",
