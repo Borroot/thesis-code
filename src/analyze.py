@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     key_paths = [
         ["learners", "default_policy", "policy_loss"],
-        ["learners", "default_policy", "vf_loss"],
+        # ["learners", "default_policy", "vf_loss"],
         # ["learners", "default_policy", "total_loss"],
         # ["learners", "default_policy", "mean_kl_loss"],
     ]
@@ -81,5 +81,5 @@ if __name__ == "__main__":
     ]
     pprint(iterations[0])
 
-    # plot_metric(iterations, key_path)
+    plot_metric(iterations, key_path)
     # plot_metrics(iterations, key_paths)

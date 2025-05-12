@@ -1,4 +1,5 @@
 import copy
+import time  # Add this import for timing
 
 import numpy as np
 import torch
@@ -35,8 +36,13 @@ class MaskModel(nn.Module):
             mask = torch.bernoulli(probs)
             return mask
 
-    def _generate_obs_batch(self, env):
+    def _generate_obs_batch(self, env, fake_batch=False):
         """Execute each action in the current state of the environment."""
+        # Return a fake batch of random data for testing and timing
+        if fake_batch:
+            return torch.rand((self.act_dim, self.obs_dim), dtype=torch.float32)
+
+        # Actually calculate a real batch, this takes a lot of time
         obs_batch = np.zeros((self.act_dim, self.obs_dim), dtype=np.float32)
         for action in range(env.action_space.n):
             print(f"{action}/{range(env.action_space.n)}")
@@ -48,7 +54,7 @@ class MaskModel(nn.Module):
     def _generate_labels(self, obs_batch):
         """Generate the label for each action based on clustering results."""
         # Cluster the observations
-        dbscan = DBSCAN(eps=0.1, min_samples=1)
+        dbscan = DBSCAN(eps=0.1, min_samples=1, n_jobs=16)
         clusters = dbscan.fit_predict(obs_batch)
 
         # Generate cluster labels
@@ -61,7 +67,7 @@ class MaskModel(nn.Module):
         loglabels = torch.log(labels + 1e-9)
         return loglabels
 
-    def train(self, env, num_episodes=10):
+    def train(self, env, num_episodes=10, fake_batch=False):
         """Train the mask model on the given environment."""
         # Move neural network to the gpu
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -70,10 +76,23 @@ class MaskModel(nn.Module):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)
         obs, _ = env.reset()
 
+        log = {
+            "obs_batch": [],
+            "clustering": [],
+            "nn_update": [],
+        }
+
         for episode in range(num_episodes):
             # Generate the observations, the true labels and the predictions
-            obs_batch = self._generate_obs_batch(env)
+            start = time.time()
+            obs_batch = self._generate_obs_batch(env, fake_batch)
+            log["obs_batch"].append(time.time() - start)
+
+            start = time.time()
             loglabels = self._generate_labels(obs_batch)
+            log["clustering"].append(time.time() - start)
+
+            start = time.time()
             logprobs = self.forward(
                 torch.tensor(obs["observations"], device=self.device)
             )
@@ -83,13 +102,22 @@ class MaskModel(nn.Module):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            log["nn_update"].append(time.time() - start)
 
-            print(f"Episode {episode + 1}/{num_episodes}, Loss: {loss.item()}")
+            if not fake_batch:
+                print(f"Episode {episode + 1}/{num_episodes}, Loss: {loss.item()}")
 
             # Perform a random action to update the environment
             obs, _, terminated, truncated, _ = env.step(env.action_space.sample())
             if terminated or truncated:
                 obs, _ = env.reset()
+
+        # Print the timer information
+        parts = ["clustering", "nn_update"]
+        parts += [] if fake_batch else ["obs_batch"]
+        for part in parts:
+            times = np.array(log[part])
+            print(f"{part}: {times.mean():.6f} ±{times.std():.6f} (N={len(times)})")
 
 
 if __name__ == "__main__":
@@ -112,7 +140,5 @@ if __name__ == "__main__":
         }
     )
 
-    # mask_model = MaskModel(
-    #     *env.observation_space["observations"].shape, env.action_space.n
-    # )
-    # mask_model.train(env, num_episodes=2)
+    mask_model = MaskModel(env.obs_dim, env.act_dim)
+    mask_model.train(env, num_episodes=2)

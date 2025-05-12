@@ -10,9 +10,9 @@ from lightsim2grid import LightSimBackend
 
 ALL_ATTR_ACT_DISCRETE = (
     "set_line_status",
-    "change_line_status",
     "set_bus",
-    "change_bus",
+    # "change_line_status",
+    # "change_bus",
 )
 
 
@@ -57,6 +57,10 @@ class Env(gym.Env):
                 "observations": self.gym_env.observation_space,
             }
         )
+
+        # Set some useful variables for the observation and action space sizes
+        self.obs_dim = self.observation_space["observations"].shape[0]
+        self.act_dim = self.action_space.n
 
     def _remove_invalid_actions(self, g2p_env, act_tokeep):
         """Filter out actions which are not usable in the environment."""
