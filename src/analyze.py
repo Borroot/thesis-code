@@ -3,6 +3,7 @@ from pprint import pprint
 
 import jsonpickle
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def load_checkpoints(path_folder):
@@ -63,7 +64,37 @@ def plot_metrics(data, key_paths):
     plt.show()
 
 
-if __name__ == "__main__":
+def timers():
+    """Read PPO timers from checkpoints data."""
+    path_folder = "checkpoints_results/"
+    env_names = [
+        "l2rpn_case14_sandbox-16_env_runners",
+        "l2rpn_case14_sandbox-1_env_runner",
+        # "l2rpn_neurips_2020_track1_small",
+        # "l2rpn_neurips_2020_track1_large",
+    ]
+
+    timers = [
+        "evaluation_iteration",
+        "training_iteration",
+        "env_runner_sampling_timer",
+        "learner_update_timer",
+    ]
+
+    for env_name in env_names:
+        print(env_name)
+        config, iterations = load_checkpoints(path_folder + env_name)
+        for timer in timers:
+            times = []
+            for iteration in iterations:
+                if timer in iteration["timers"]:
+                    times.append(iteration["timers"][timer])
+            times = np.array(times)
+            print(f"{timer}: {times.mean():.6f} ±{times.std():.6f} (N={len(times)})")
+
+
+def plots():
+    """Generate plots."""
     path_folder = "checkpoints/"
     config, iterations = load_checkpoints(path_folder)
 
@@ -83,3 +114,8 @@ if __name__ == "__main__":
 
     plot_metric(iterations, key_path)
     # plot_metrics(iterations, key_paths)
+
+
+if __name__ == "__main__":
+    # plots()
+    timers()

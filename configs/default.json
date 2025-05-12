@@ -1,5 +1,5 @@
 {
-    "env-name": "l2rpn_wcci_2022",
+    "env-name": "l2rpn_case14_sandbox",
     "path-env": "envs",
     "path-checkpoint-save": "checkpoints",
     "checkpoint-interval": 10,
