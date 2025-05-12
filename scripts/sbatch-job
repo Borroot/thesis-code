@@ -30,14 +30,13 @@ declare -r OUTPUT_DIR="$HOME/code/checkpoints/$OUTPUT_STAMP"
 mkdir -p "$OUTPUT_DIR"
 
 # Execute the python program
-# TODO such low sampling rate for py-spy makes it useless
-py-spy record                                    \
-    --output "$OUTPUT_DIR/profile"               \
-    --format speedscope                          \
-    --subprocesses                               \
-    --function                                   \
-    --rate 1                                     \
-    --                                           \
+# py-spy record                                    \
+#     --output "$OUTPUT_DIR/profile"               \
+#     --format speedscope                          \
+#     --subprocesses                               \
+#     --function                                   \
+#     --rate 1                                     \
+#     --                                           \
 poetry run                                       \
 python "$HOME/code/src/ppo.py"                   \
     --env-name "$ENV_NAME"                       \

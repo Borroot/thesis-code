@@ -44,6 +44,7 @@ def create_algo(args):
             num_cpus_per_env_runner=args.num_cpus_per_env_runner,
             num_gpus_per_env_runner=0,
             sample_timeout_s=None,  # TODO set a sensible value
+            rollout_fragment_length=args.rollout_fragment_length,
         )
         .learners(
             # 0 means training takes place on a local learner on main process

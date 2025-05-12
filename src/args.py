@@ -81,6 +81,11 @@ def commandline_arguments():
         type=int,
         help="Number of CPUs per environment runner",
     )
+    parser.add_argument(
+        "--rollout-fragment-length",
+        type=int,
+        help="Number of timesteps each environment runner steps through",
+    )
 
     # Learner parameters
     parser.add_argument(
