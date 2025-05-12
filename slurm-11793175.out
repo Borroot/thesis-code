@@ -1,0 +1,36 @@
+2025-05-13 00:13:23,084	WARNING deprecation.py:50 -- DeprecationWarning: `ray.rllib.algorithms.ppo.torch.ppo_torch_rl_module.PPOTorchRLModule` has been deprecated. Use `ray.rllib.algorithms.ppo.torch.default_ppo_torch_rl_module.DefaultPPOTorchRLModule` instead. This will raise an error in the future!
+usage: ppo.py [-h] [--config CONFIG]
+              [--env-name {l2rpn_case14_sandbox,l2rpn_icaps_2021_small,l2rpn_icaps_2021_large,l2rpn_wcci_2020,l2rpn_wcci_2022,l2rpn_idf_2023}]
+              [--path-env PATH_ENV]
+              [--path-checkpoint-save PATH_CHECKPOINT_SAVE]
+              [--path-checkpoint-load PATH_CHECKPOINT_LOAD]
+              [--checkpoint-interval CHECKPOINT_INTERVAL]
+              [--num-env-runners NUM_ENV_RUNNERS]
+              [--num-envs-per-env-runner NUM_ENVS_PER_ENV_RUNNER]
+              [--num-cpus-per-env-runner NUM_CPUS_PER_ENV_RUNNER]
+              [--rollout-fragment-length ROLLOUT_FRAGMENT_LENGTH]
+              [--num-learners NUM_LEARNERS]
+              [--num-gpus-per-learner NUM_GPUS_PER_LEARNER]
+              [--epsilon EPSILON] [--learning-rate LEARNING_RATE]
+              [--gamma GAMMA] [--num-epochs NUM_EPOCHS]
+              [--minibatch-size MINIBATCH_SIZE]
+              [--num-iterations NUM_ITERATIONS]
+              [--evaluation-interval EVALUATION_INTERVAL]
+              [--evaluation-duration EVALUATION_DURATION]
+              [--evaluation-parallel-to-training]
+ppo.py: error: argument --env-name: invalid choice: 'l2rpn_neurips_2020_track1_large' (choose from 'l2rpn_case14_sandbox', 'l2rpn_icaps_2021_small', 'l2rpn_icaps_2021_large', 'l2rpn_wcci_2020', 'l2rpn_wcci_2022', 'l2rpn_idf_2023')
+cp: cannot stat '/scratch-node/bpulles.11793175/checkpoints/*': No such file or directory
+
+JOB STATISTICS
+==============
+Job ID: 11793175
+Cluster: snellius
+User/Group: bpulles/bpulles
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:15
+CPU Efficiency: 0.92% of 00:27:18 core-walltime
+Job Wall-clock time: 00:01:31
+Memory Utilized: 1.98 MB
+Memory Efficiency: 0.00% of 120.00 GB (120.00 GB/node)

@@ -7,7 +7,7 @@
 # | gpu_mig  | 8    | 72        | 1/8 node: 9 cores  + 1 GPU | 512 SBUs    | 64  SBUs   |
 # +----------+------+-----------+----------------------------+-------------+------------+
 #SBATCH --job-name="PPO_grid"
-#SBATCH --time=10:00  # HH:MM:SS
+#SBATCH --time=01:00:00  # HH:MM:SS
 #SBATCH --partition=gpu_a100
 #SBATCH --cpus-per-task=18
 #SBATCH --gpus-per-node=1
@@ -20,7 +20,7 @@ module load 2024
 module load Python/3.12.3-GCCcore-13.3.0
 
 # Copy the environment to local scratch storage
-declare -r ENV_NAME="l2rpn_case14_sandbox"
+declare -r ENV_NAME="l2rpn_neurips_2020_track1_large"
 mkdir -p "$TMPDIR/envs"
 cp -r "$HOME/code/envs/$ENV_NAME" "$TMPDIR/envs/$ENV_NAME"
 
@@ -42,7 +42,8 @@ python "$HOME/code/src/ppo.py"                   \
     --env-name "$ENV_NAME"                       \
     --path-env "$TMPDIR/envs"                    \
     --path-checkpoint-save "$TMPDIR/checkpoints" \
-    --num-iterations 1
+    --num-iterations 1                           \
+    --num-env-runners 16
 
 # Copy the saved checkpoints to home
 cp -r "$TMPDIR/checkpoints/"* "$OUTPUT_DIR"
