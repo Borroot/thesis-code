@@ -51,14 +51,18 @@ class MaskModel(nn.Module):
             obs_batch[action] = obs_next["observations"]
         return obs_batch
 
-    def _generate_labels(self, obs_batch):
+    def _generate_labels(self, obs_batch, fake_labels):
         """Generate the label for each action based on clustering results."""
+        # Return fake labels of random data for testing and timing
+        if fake_labels:
+            return torch.rand(self.act_dim, dtype=torch.float32, device=self.device)
+
         # Cluster the observations
-        dbscan = DBSCAN(eps=0.1, min_samples=1, n_jobs=16)
+        dbscan = DBSCAN(eps=0.1, min_samples=1)
         clusters = dbscan.fit_predict(obs_batch)
 
         # Generate cluster labels
-        labels = torch.zeros(*clusters.shape, dtype=torch.float32, device=self.device)
+        labels = torch.zeros(self.act_dim, dtype=torch.float32, device=self.device)
         seen = set()
         for index, c in enumerate(clusters):
             if c not in seen:
@@ -67,7 +71,7 @@ class MaskModel(nn.Module):
         loglabels = torch.log(labels + 1e-9)
         return loglabels
 
-    def train(self, env, num_episodes=10, fake_batch=False):
+    def train(self, env, num_episodes=10, fake_batch=False, fake_labels=False):
         """Train the mask model on the given environment."""
         # Move neural network to the gpu
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -89,7 +93,7 @@ class MaskModel(nn.Module):
             log["obs_batch"].append(time.time() - start)
 
             start = time.time()
-            loglabels = self._generate_labels(obs_batch)
+            loglabels = self._generate_labels(obs_batch, fake_labels)
             log["clustering"].append(time.time() - start)
 
             start = time.time()
@@ -113,8 +117,12 @@ class MaskModel(nn.Module):
                 obs, _ = env.reset()
 
         # Print the timer information
-        parts = ["clustering", "nn_update"]
-        parts += [] if fake_batch else ["obs_batch"]
+        parts = ["nn_update"]
+        if not fake_batch:
+            parts.append("obs_batch")
+        if not fake_labels:
+            parts.append("clustering")
+
         for part in parts:
             times = np.array(log[part])
             print(f"{part}: {times.mean():.6f} ±{times.std():.6f} (N={len(times)})")
