@@ -244,7 +244,7 @@ def plot_ppo_env_comparison(threads_list):
 
     plt.ylabel("Total Training Time (hours)")
 
-    plt.title("case14_sandbox: Laptop vs Cluster PPO Training Time (1 Env)")
+    plt.title("case14_sandbox: Laptop vs Cluster PPO Training Time")
     plt.legend(
         lines,
         labels,
@@ -254,7 +254,8 @@ def plot_ppo_env_comparison(threads_list):
         borderaxespad=0.2,
         frameon=True,
     )
-    plt.grid(True, which="both", axis="y", linestyle=":", linewidth=0.7, alpha=0.6)
+    # plt.grid(True, which="both", axis="y", linestyle=":", linewidth=0.7, alpha=0.6)
+    plt.grid(True)
     plt.gca().xaxis.set_major_formatter(mticker.StrMethodFormatter("{x:,.0f}"))
     plt.tight_layout(rect=[0, 0, 1, 0.98])  # Leave more space for legend
 
