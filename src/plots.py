@@ -37,7 +37,7 @@ def set_log_yscale_and_labels(ax, env):
         f"{int(yticks[0]):,}h\n({yticks[0]/24:.1f}d)",
         f"{int(yticks[1]):,}h\n({yticks[1]/168:.1f}w)",
         f"{int(yticks[2]):,}h\n({yticks[2]/168:.1f}w)",
-        f"{int(yticks[3]):,}h\n({yticks[3]/8760:.2f}y)",
+        f"{int(yticks[3]):,}h\n({yticks[3]/8760:.1f}y)",
     ]
     ax.set_yticks(yticks)
     ax.set_yticklabels(ylabels)
@@ -96,6 +96,7 @@ def plot_mask_model_lines(
                 marker=marker,
                 color=thread_to_color[n_threads],
                 label=f"{system_name} - {n_threads} Threads",
+                markersize=12,
             )
             lines.append(line)
             labels.append(f"{system_name} - {n_threads} Threads")
@@ -236,6 +237,7 @@ def plot_ppo_lines(
                 marker=marker,
                 color=thread_to_color[n_threads],
                 label=f"{system_name} - {n_threads} Threads, {num_gpus} GPUs",
+                markersize=12,
             )
             lines.append(line)
             labels.append(f"{system_name} - {n_threads} Threads, {num_gpus} GPUs")
@@ -247,9 +249,9 @@ def ppo_set_log_yscale_and_labels(ax):
     yticks = [1e1, 1e2, 1e3, 1e4]
     ylabels = [
         f"{int(yticks[0]):,}h",
-        f"{int(yticks[1]):,}h\n({yticks[1]/24:.2f}d)",
-        f"{int(yticks[2]):,}h\n({yticks[2]/168:.2f}w)",
-        f"{int(yticks[3]):,}h\n({yticks[3]/8760:.2f}y)",
+        f"{int(yticks[1]):,}h\n({yticks[1]/24:.1f}d)",
+        f"{int(yticks[2]):,}h\n({yticks[2]/168:.1f}w)",
+        f"{int(yticks[3]):,}h\n({yticks[3]/168:.1f}w)",
     ]
     ax.set_yticks(yticks)
     ax.set_yticklabels(ylabels)
