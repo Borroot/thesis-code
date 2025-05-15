@@ -94,13 +94,19 @@ def plot_env_comparison(
             plt.ylabel("Total Training Time (hours, years)")
 
             # Let matplotlib handle log ticks automatically for better results
-            # Optionally, you can format the tick labels to show years as well:
             def log_year_formatter(x, pos):
                 if x <= 0:
                     return "0"
                 return f"{int(x):,}\n({x/8760:.2f}y)"
 
             ax.yaxis.set_major_formatter(mticker.FuncFormatter(log_year_formatter))
+
+            # Add more horizontal grid lines (minor grid)
+            ax.yaxis.set_minor_locator(
+                mticker.LogLocator(base=10.0, subs=np.arange(1, 10), numticks=100)
+            )
+            ax.grid(which="minor", axis="y", linestyle=":", linewidth=0.7, alpha=0.6)
+            ax.grid(which="major", axis="y", linestyle="-", linewidth=1.2)
         else:
             # Only show hours, no weeks for sandbox
             hours_ticks = ax.get_yticks()
@@ -114,8 +120,13 @@ def plot_env_comparison(
 
         plt.title(f"{env}: Laptop vs Cluster Mask Model Training Time")
         plt.legend(
-            lines, labels, ncol=len(threads_list), loc="lower center",
-            bbox_to_anchor=(0.5, 1.13), borderaxespad=0.2, frameon=True
+            lines,
+            labels,
+            ncol=len(threads_list),
+            loc="lower center",
+            bbox_to_anchor=(0.5, 1.07),
+            borderaxespad=0.2,
+            frameon=True,
         )
         plt.grid(True)
         plt.gca().xaxis.set_major_formatter(mticker.StrMethodFormatter("{x:,.0f}"))
@@ -210,8 +221,13 @@ def plot_ppo_env_comparison(threads_list):
 
     plt.title("case14_sandbox: Laptop vs Cluster PPO Training Time (1 Env)")
     plt.legend(
-        lines, labels, ncol=len(threads_list), loc="lower center",
-        bbox_to_anchor=(0.5, 1.13), borderaxespad=0.2, frameon=True
+        lines,
+        labels,
+        ncol=len(threads_list),
+        loc="lower center",
+        bbox_to_anchor=(0.5, 1.07),
+        borderaxespad=0.2,
+        frameon=True,
     )
     plt.grid(True)
     plt.gca().xaxis.set_major_formatter(mticker.StrMethodFormatter("{x:,.0f}"))
