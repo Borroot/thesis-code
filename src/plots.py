@@ -91,15 +91,18 @@ def plot_env_comparison(
         # Set log scale for neurips_2020_track1 and wcci_2022, but set ticks/labels after plotting
         if env in ["neurips_2020_track1", "wcci_2022"]:
             ax.set_yscale("log")
-            plt.ylabel("Total Training Time (hours, years)")
+            plt.ylabel("Total Training Time (hours)")
 
-            # Let matplotlib handle log ticks automatically for better results
-            def log_year_formatter(x, pos):
-                if x <= 0:
-                    return "0"
-                return f"{int(x):,}\n({x/8760:.2f}y)"
-
-            ax.yaxis.set_major_formatter(mticker.FuncFormatter(log_year_formatter))
+            # Manually set four log ticks (adjust values as needed for your data)
+            yticks = [1e2, 1e3, 1e4, 1e5]
+            ylabels = [
+                f"{int(yticks[0]):,}\n({yticks[0]/24:.1f}d)",
+                f"{int(yticks[1]):,}\n({yticks[1]/168:.1f}w)",
+                f"{int(yticks[2]):,}\n({yticks[2]/168:.1f}w)",
+                f"{int(yticks[3]):,}\n({yticks[3]/8760:.2f}y)",
+            ]
+            ax.set_yticks(yticks)
+            ax.set_yticklabels(ylabels)
 
             # Add more horizontal grid lines (minor grid)
             ax.yaxis.set_minor_locator(
