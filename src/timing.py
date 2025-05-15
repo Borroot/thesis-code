@@ -72,17 +72,17 @@ def time_mask_model(env, reps=1, fake_batch=True, fake_labels=True):
 
 
 def experiments(env, fast):
-    # # Time actions
-    # time_action(env, max_actions=1000)
+    # Time actions
+    times_action = time_action(env, max_actions=1000)
 
-    # # Time environment deepcopy
-    # time_env_copy(env, reps=30)
+    # Time environment deepcopy
+    times_env_copy = time_env_copy(env, reps=30)
 
-    # # Time behavioral batch generation
-    # obs_batch_estimate = env.act_dim * (times_action.mean() + times_env_copy.mean())
-    # print(f"obs_batch estimate: {obs_batch_estimate:.6f}")
-    # if fast:
-    #     time_obs_batch(env, reps=30)
+    # Time behavioral batch generation
+    obs_batch_estimate = env.act_dim * (times_action.mean() + times_env_copy.mean())
+    print(f"obs_batch estimate: {obs_batch_estimate:.6f}")
+    if fast:
+        time_obs_batch(env, reps=30)
 
     # Time clustering
     time_mask_model(env, reps=1000 if fast else 5, fake_labels=False)
@@ -113,7 +113,7 @@ if __name__ == "__main__":
             }
         )
         print(env_name)
-        # print("action space:", env.act_dim)
-        # print("observation space:", env.obs_dim)
+        print("action space:", env.act_dim)
+        print("observation space:", env.obs_dim)
 
         experiments(env, fast)
