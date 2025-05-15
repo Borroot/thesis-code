@@ -14,10 +14,17 @@ def mask_model_training_time(
 
 
 def ppo_training_time(
-    iterations, sampling_time, num_threads, learner_update_time, evaluation_time
+    iterations,
+    sampling_time,
+    num_threads,
+    learner_update_time,
+    evaluation_time,
+    num_gpus,
 ):
     return iterations * (
-        (sampling_time / num_threads) + learner_update_time + evaluation_time
+        (sampling_time / num_threads)
+        + (learner_update_time / num_gpus)
+        + evaluation_time
     )
 
 
@@ -96,10 +103,10 @@ def plot_env_comparison(
             # Manually set four log ticks (adjust values as needed for your data)
             yticks = [1e2, 1e3, 1e4, 1e5]
             ylabels = [
-                f"{int(yticks[0]):,}\n({yticks[0]/24:.1f}d)",
-                f"{int(yticks[1]):,}\n({yticks[1]/168:.1f}w)",
-                f"{int(yticks[2]):,}\n({yticks[2]/168:.1f}w)",
-                f"{int(yticks[3]):,}\n({yticks[3]/8760:.2f}y)",
+                f"{int(yticks[0]):,}h\n({yticks[0]/24:.1f}d)",
+                f"{int(yticks[1]):,}h\n({yticks[1]/168:.1f}w)",
+                f"{int(yticks[2]):,}h\n({yticks[2]/168:.1f}w)",
+                f"{int(yticks[3]):,}h\n({yticks[3]/8760:.2f}y)",
             ]
             ax.set_yticks(yticks)
             ax.set_yticklabels(ylabels)
@@ -170,7 +177,7 @@ def plot_ppo_env_comparison(threads_list):
         n_threads: color_cycle(i) for i, n_threads in enumerate(threads_list)
     }
 
-    plt.figure(figsize=(20, 16))  # Increase height
+    plt.figure(figsize=(20, 16))
     plt.rcParams.update(
         {
             "font.size": 28,
@@ -178,7 +185,7 @@ def plot_ppo_env_comparison(threads_list):
             "axes.labelsize": 30,
             "xtick.labelsize": 26,
             "ytick.labelsize": 26,
-            "legend.fontsize": 24,
+            "legend.fontsize": 22,  # Smaller legend font
             "legend.title_fontsize": 26,
         }
     )
@@ -186,6 +193,7 @@ def plot_ppo_env_comparison(threads_list):
     lines = []
     labels = []
     for n_threads in threads_list:
+        num_gpus = max(1, int(np.ceil(n_threads / 36)))
         for system_name, marker, _ in systems:
             stats = env_stats[system_name][1]
             times = [
@@ -195,32 +203,46 @@ def plot_ppo_env_comparison(threads_list):
                     num_threads=n_threads,
                     learner_update_time=stats["learner_update_time"],
                     evaluation_time=stats["evaluation_time"],
+                    num_gpus=num_gpus,
                 )
                 / 3600  # convert to hours
                 for iters in iterations_range
             ]
+            if len(times) > 0:
+                times[0] = np.nan
             (line,) = plt.plot(
                 iterations_range,
                 times,
                 marker=marker,
                 color=thread_to_color[n_threads],
-                label=f"{system_name} - {n_threads} Threads",
+                label=f"{system_name} - {n_threads} Threads, {num_gpus} GPUs",
             )
             lines.append(line)
-            labels.append(f"{system_name} - {n_threads} Threads")
+            labels.append(f"{system_name} - {n_threads} Threads, {num_gpus} GPUs")
 
     plt.xlabel("Number of Iterations")
 
-    # Add weeks to y-axis labels for sandbox PPO
     ax = plt.gca()
-    hours_ticks = ax.get_yticks()
-    hours_ticks = [tick for tick in hours_ticks if tick >= 0]
-    week_labels = [
-        f"{int(tick):,} ({tick/168:.2f}w)" if tick > 0 else "0" for tick in hours_ticks
+    ax.set_yscale("log")
+    # Manually set four log ticks (adjust values as needed for your data)
+    yticks = [1e1, 1e2, 1e3, 1e4]
+    ylabels = [
+        f"{int(yticks[0]):,}h",
+        f"{int(yticks[1]):,}h\n({yticks[1]/24:.2f}d)",
+        f"{int(yticks[2]):,}h\n({yticks[2]/168:.2f}w)",
+        f"{int(yticks[3]):,}h\n({yticks[3]/8760:.2f}y)",
     ]
-    ax.set_yticks(hours_ticks)
-    ax.set_yticklabels(week_labels)
-    plt.ylabel("Total Training Time (hours, weeks)")
+    ax.set_yticks(yticks)
+    ax.set_yticklabels(ylabels)
+
+    # Add more horizontal grid lines (minor grid)
+    ax.yaxis.set_minor_locator(
+        mticker.LogLocator(base=10.0, subs=np.arange(1, 10), numticks=100)
+    )
+    ax.grid(which="minor", axis="y", linestyle=":", linewidth=0.7, alpha=0.6)
+    ax.grid(which="major", axis="y", linestyle="-", linewidth=1.2)
+
+    plt.ylabel("Total Training Time (hours)")
 
     plt.title("case14_sandbox: Laptop vs Cluster PPO Training Time (1 Env)")
     plt.legend(
@@ -228,11 +250,11 @@ def plot_ppo_env_comparison(threads_list):
         labels,
         ncol=len(threads_list),
         loc="lower center",
-        bbox_to_anchor=(0.5, 1.07),
+        bbox_to_anchor=(0.45, 1.07),
         borderaxespad=0.2,
         frameon=True,
     )
-    plt.grid(True)
+    plt.grid(True, which="both", axis="y", linestyle=":", linewidth=0.7, alpha=0.6)
     plt.gca().xaxis.set_major_formatter(mticker.StrMethodFormatter("{x:,.0f}"))
     plt.tight_layout(rect=[0, 0, 1, 0.98])  # Leave more space for legend
 
